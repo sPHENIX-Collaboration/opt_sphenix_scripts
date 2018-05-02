@@ -214,12 +214,6 @@ fi
 path=$DEFAULT_SYSTEM_PATH
 manpath=`/usr/bin/man --path`
 
-# add our gcc version
-if [ -d /opt/gcc/4.8.2/bin ] 
-then
-  path=/opt/gcc/4.8.2/bin:$path
-fi
-
 if [ -d $OPT_SPHENIX/bin ] 
 then
   path=($OPT_SPHENIX/bin:$path)
