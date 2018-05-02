@@ -318,6 +318,10 @@ else
     setenv MANPATH ${manpath}
 endif
 
+#replace @sys by afs sysname (to strip duplicate entries with /@sys/ and /x86_64_sl7/)
+setenv PATH  `echo $PATH | sed "s/@sys/$sysname/g"`
+setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | sed "s/@sys/$sysname/g"`
+setenv MANPATH  `echo $MANPATH | sed "s/@sys/$sysname/g"`
 
 # strip duplicates in paths
 setenv PATH `echo -n $PATH | awk -v RS=: -v ORS=: '! arr[$0]++'` 
