@@ -70,16 +70,17 @@ endif
 # the afs sysname changes in the future
 set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
 
-# set LANG env var so compiler errors come out correctly
-# instead of a`
-setenv LANG C
-
 # turn off opengl direct rendering bc problems for nx
 setenv LIBGL_ALWAYS_INDIRECT 1
 
 # speed up DCache
 setenv DCACHE_RAHEAD
 setenv DCACHE_RA_BUFFER 2097152
+
+
+if (! $?DEFAULT_SYSTEM_PATH) then
+  setenv DEFAULT_SYSTEM_PATH $PATH
+endif
 
 # Make copies of PATH and LD_LIBRARY_PATH as they were
 setenv ORIG_PATH ${PATH}
@@ -181,7 +182,8 @@ endif
 # Basic PATH
 switch ($HOSTTYPE) 
   case *linux*:
-    set path = (/usr/local/bin /bin /usr/bin )
+#    set path = $DEFAULT_SYSTEM_PATH
+    setenv PATH $DEFAULT_SYSTEM_PATH
     set manpath = `/usr/bin/man --path`
     breaksw
 
@@ -303,10 +305,6 @@ if (-d ${OPT_SPHENIX}/lhapdf-5.9.1/lib) then
   set  ldpath = ${ldpath}:${OPT_SPHENIX}/lhapdf-5.9.1/lib
 endif
 
-if (-d /opt/gcc/4.8.2/bin) then
-  set path = (/opt/gcc/4.8.2/bin $path)
-endif
-
 # Set some actual environment vars
 if ($opt_a) then
     setenv PATH ${ORIG_PATH}:${PATH}
@@ -325,3 +323,12 @@ else
     setenv MANPATH ${manpath}
 endif
 
+
+# strip duplicates in paths
+setenv PATH `echo -n $PATH | awk -v RS=: -v ORS=: '! arr[$0]++'` 
+setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '! arr[$0]++'`
+setenv MANPATH `echo -n $MANPATH | awk -v RS=: -v ORS=: '! arr[$0]++'`
+# the above leaves a colon at the end of the strings, so strip the last character
+setenv PATH `echo -n $PATH | sed 's/.$//'`
+setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
+setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
