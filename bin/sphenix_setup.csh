@@ -78,10 +78,6 @@ setenv DCACHE_RAHEAD
 setenv DCACHE_RA_BUFFER 2097152
 
 
-if (! $?DEFAULT_SYSTEM_PATH) then
-  setenv DEFAULT_SYSTEM_PATH $PATH
-endif
-
 # Make copies of PATH and LD_LIBRARY_PATH as they were
 setenv ORIG_PATH ${PATH}
 if ($?LD_LIBRARY_PATH) then
@@ -182,8 +178,7 @@ endif
 # Basic PATH
 switch ($HOSTTYPE) 
   case *linux*:
-#    set path = $DEFAULT_SYSTEM_PATH
-    setenv PATH $DEFAULT_SYSTEM_PATH
+    set path = (/usr/lib64/qt-3.3/bin /usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
     set manpath = `/usr/bin/man --path`
     breaksw
 
