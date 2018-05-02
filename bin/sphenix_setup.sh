@@ -349,6 +349,10 @@ then
     fi
 fi
 
+#replace @sys by afs sysname (to strip duplicate entries with /@sys/ and /x86_64_sl7/)
+PATH=`echo $PATH | sed "s/@sys/$sysname/g"`
+LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | sed "s/@sys/$sysname/g"`
+MANPATH=`echo $MANPATH | sed "s/@sys/$sysname/g"`
 
 # strip duplicates in paths
 PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '!arr[$0]++'` 
