@@ -79,14 +79,6 @@ export LIBGL_ALWAYS_INDIRECT=1
 export DCACHE_RAHEAD
 export DCACHE_RA_BUFFER=2097152
 
-# Make copies of PATH, LD_LIBRARY_PATH and MANPATH as they were
-# DEFAULT_PATH stays so we can initialize our PATH from it
-# even if this script is re-sourced
-if [ -z "$DEFAULT_SYSTEM_PATH" ]
-then
-  export DEFAULT_SYSTEM_PATH=$PATH
-fi
-
 # store previous paths in case we want to prepend them (with -a)
 export ORIG_PATH=$PATH
 
@@ -106,7 +98,7 @@ else
 fi
 
 # initialize path
-path=$DEFAULT_SYSTEM_PATH
+path=(/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
 
 if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
 then
@@ -211,7 +203,6 @@ fi
 # Initialize PATH and LD_LIBRARY_PATH to original system 
 # path and MANPATH
 
-path=$DEFAULT_SYSTEM_PATH
 manpath=`/usr/bin/man --path`
 
 if [ -d $OPT_SPHENIX/bin ] 
