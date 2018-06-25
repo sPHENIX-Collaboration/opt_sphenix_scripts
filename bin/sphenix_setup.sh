@@ -75,6 +75,9 @@ sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
 # turn off opengl direct rendering bc problems for nx
 export LIBGL_ALWAYS_INDIRECT=1
 
+# turn off gtk warning about accessibility bus
+export NO_AT_BRIDGE=1
+
 # speed up DCache
 export DCACHE_RAHEAD
 export DCACHE_RA_BUFFER=2097152
@@ -273,7 +276,7 @@ done
 # Set up Insure++, if we have it
 if [ -z  $PARASOFT ] 
 then
-  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.4.6
+  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.0
 fi
 
 if [ -d $PARASOFT/bin ] 
