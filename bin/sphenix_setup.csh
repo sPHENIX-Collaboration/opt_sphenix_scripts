@@ -73,6 +73,9 @@ set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
 # turn off opengl direct rendering bc problems for nx
 setenv LIBGL_ALWAYS_INDIRECT 1
 
+# turn off gtk warning about accessibility bus
+setenv NO_AT_BRIDGE 1
+
 # speed up DCache
 setenv DCACHE_RAHEAD
 setenv DCACHE_RA_BUFFER 2097152
@@ -238,7 +241,7 @@ end
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.4.6
+  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.0
 endif
 
 if (-d ${PARASOFT}/bin) then
