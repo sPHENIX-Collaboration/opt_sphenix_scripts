@@ -155,6 +155,18 @@ then
   fi
   export OFFLINE_MAIN=/afs/rhic.bnl.gov/sphenix/new/../$opt_v/
 fi
+
+if [[ $OFFLINE_MAIN = *insure* ]]
+then
+  export G_SLICE=always-malloc
+else
+  if [ ! -z "$G_SLICE" ]
+  then
+    unset G_SLICE
+  fi
+fi
+
+
 # Normalize OFFLINE_MAIN 
 if [ -d $OFFLINE_MAIN ] 
 then

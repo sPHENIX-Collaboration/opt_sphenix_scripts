@@ -140,6 +140,14 @@ if (! $?OFFLINE_MAIN) then
   setenv OFFLINE_MAIN /afs/rhic.bnl.gov/sphenix/new/../$opt_v/
 endif
 
+if ($OFFLINE_MAIN =~ *"insure"* ) then
+  setenv G_SLICE always-malloc
+else
+  if ($?G_SLICE) then
+    unsetenv G_SLICE
+  endif
+endif
+
 # Normalize OFFLINE_MAIN 
 if (-d $OFFLINE_MAIN) then
   set here=`pwd`
