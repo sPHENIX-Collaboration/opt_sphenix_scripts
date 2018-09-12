@@ -62,6 +62,7 @@ if [ $opt_n != 0 ]
   unset ${!OPT_*}
   unset PARASOFT
   unset PERL5LIB
+  unset PGHOST
   unset PYTHIA8
   unset ROOTSYS
   unset SIMULATION_MAIN
@@ -73,7 +74,9 @@ fi
 sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
 
 # turn off opengl direct rendering bc problems for nx
-export LIBGL_ALWAYS_INDIRECT=1
+# that problem seems to have been fixed, leave this in here since it
+# took a long time to figure this one out
+# export LIBGL_ALWAYS_INDIRECT=1
 
 # turn off gtk warning about accessibility bus
 export NO_AT_BRIDGE=1
@@ -99,9 +102,6 @@ then
 else
     unset ORIG_MANPATH
 fi
-
-# initialize path
-path=(/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
 
 if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
 then
@@ -172,8 +172,7 @@ if [ -d $OFFLINE_MAIN ]
 then
   here=`pwd`
   cd $OFFLINE_MAIN
-  there=`pwd`
-  export OFFLINE_MAIN=`echo $there | sed "s/@sys/$sysname/g"`
+  export OFFLINE_MAIN=`pwd -P`
   cd $here
 fi
 
@@ -200,69 +199,11 @@ then
   else    
     export ROOTSYS=$OPT_SPHENIX/root
   fi
+  here=`pwd`
+  cd $ROOTSYS
+  export ROOTSYS=`pwd -P`
+  cd $here
 fi
-
-#Pythia8
-if [[ -z PYTHIA8 && -d $OFFLINE_MAIN/share/Pythia8 ]]
-then
-  export PYTHIA8=$OFFLINE_MAIN/share/Pythia8
-fi
-
-if [ -z "$PGHOST" ]
-then
-  export PGHOST=phnxdbrcf7
-  export PGUSER=phnxrc
-#  export PG_PHENIX_DBNAME=Phenix_phnxdbrcf7_C
-fi
-
-# Initialize PATH and LD_LIBRARY_PATH to original system 
-# path and MANPATH
-
-manpath=`/usr/bin/man --path`
-
-if [ -d $OPT_SPHENIX/bin ] 
-then
-  path=($OPT_SPHENIX/bin:$path)
-fi
-
-if [ -d $OPT_SPHENIX/lib ] 
-then
-  ldpath=${OPT_SPHENIX}/lib:${ldpath}
-fi
-
-if [ -d $OPT_UTILS/bin ]
-then
-  path=($OPT_UTILS/bin:$path)
-fi
-if [ -d $OPT_UTILS/lib ] 
-then
-  ldpath=${OPT_UTILS}/lib:${ldpath}
-fi
-
-
-if [ -d ${OPT_SPHENIX}/man ]
-then
-    manpath=${manpath}:${OPT_SPHENIX}/man
-fi
-
-if [ -d ${OPT_SPHENIX}/share/man ] 
-then
-    manpath=${OPT_SPHENIX}/share/man:$manpath
-fi
-
-#LHAPDF
-if [ -d ${OPT_SPHENIX}/lhapdf-5.9.1/lib ] 
-then
-  ldpath=${OPT_SPHENIX}/lhapdf-5.9.1/lib:${ldpath}
-fi
-
-for d in ${ONLINE_MAIN}/bin $OFFLINE_MAIN/bin $ROOTSYS/bin
-do
-  if [ -d $d ]
-  then
-    path=$d:$path
-  fi
-done
 
 if [ -f $ROOTSYS/bin/root-config ]
 then
@@ -271,37 +212,21 @@ then
   then
     here=`pwd`
     cd $rootlibdir_tmp
-    there=`pwd`
+    there=`pwd -P`
     rootlibdir=`echo $there | sed "s/@sys/$sysname/g"`
+    cd $here
+  fi
+  rootbindir_tmp=`$ROOTSYS/bin/root-config --bindir`
+  if [ -d $rootbindir_tmp ] 
+  then
+    here=`pwd`
+    cd $rootbindir_tmp
+    there=`pwd -P`
+    rootbindir=`echo $there | sed "s/@sys/$sysname/g"`
     cd $here
   fi
 fi
 
-for d in ${ONLINE_MAIN}/lib ${OFFLINE_MAIN}/lib ${rootlibdir}
-do
-  if [ -d $d ]
-  then
-   ldpath=${d}:${ldpath}
-  fi
-done
-
-# Set up Insure++, if we have it
-if [ -z  $PARASOFT ] 
-then
-  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.0
-fi
-
-if [ -d $PARASOFT/bin ] 
-then
-  path=$path:${PARASOFT}/bin
-  ldpath=${ldpath}:${PARASOFT}/lib
-fi
-
-# set up coverity
-if [ -d /afs/rhic.bnl.gov/app/coverity-8.7.1/bin ]
-then
-  path=$path:/afs/rhic.bnl.gov/app/coverity-8.7.1/bin
-fi
 
 # Add Geant4
 if [ -z $G4_MAIN ] 
@@ -319,8 +244,7 @@ then
 # normalize G4_MAIN to /opt/phenix/geant4.Version
     here=`pwd`
     cd $G4_MAIN
-    there=`pwd`
-    export G4_MAIN=`echo $there | sed "s/@sys/$sysname/g"`
+    export G4_MAIN=`pwd -P`
     cd $here
 # this is for later possible use, extract the main version number
     g4basedir=`basename $G4_MAIN`
@@ -340,7 +264,87 @@ then
     fi
 fi
 
-# add . to paths
+#Pythia8
+if [[ -z PYTHIA8 && -d $OFFLINE_MAIN/share/Pythia8 ]]
+then
+  export PYTHIA8=$OFFLINE_MAIN/share/Pythia8
+fi
+
+# Set up Insure++, if we have it
+if [ -z  $PARASOFT ] 
+then
+  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.0
+fi
+
+# Coverity
+if [ -z $COVERITY_ROOT ]
+then
+  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-8.7.1
+fi
+
+if [ -z "$PGHOST" ]
+then
+  export PGHOST=phnxdbrcf2
+  export PGUSER=phnxrc
+  export PG_PHENIX_DBNAME=Phenix_phnxdbrcf2_C
+fi
+
+path=(/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+manpath=`/usr/bin/man --path`
+
+ldpath=/usr/local/lib64:/usr/lib64
+
+#loop over all bin dirs and prepend to path
+for bindir in $COVERITY_ROOT/bin \
+              ${PARASOFT}/bin \
+              $G4_MAIN/bin \
+              $rootbindir \
+              $OPT_SPHENIX/bin \
+              $OPT_UTILS/bin \
+              $ONLINE_MAIN/bin \
+              ${OFFLINE_MAIN}/bin
+do
+  if [ -d $bindir ]
+  then
+    path=$bindir:$path
+  fi
+done
+
+#loop over all lib dirs and prepend to ldpath
+for libdir in ${PARASOFT}/lib \
+                ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
+                ${G4_MAIN}/lib64 \
+                ${rootlibdir} \
+                $OPT_SPHENIX/lib \
+                $OPT_UTILS/lib \
+                ${ONLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib
+do
+  if [ -d $libdir ]
+  then
+    ldpath=$libdir:$ldpath
+  fi
+done
+# loop over all man dirs and prepend to manpath
+for mandir in ${ROOTSYS}/man \
+              ${OPT_SPHENIX}/man \
+              ${OPT_SPHENIX}/share/man \
+              ${OPT_UTILS}/man \
+              ${OPT_UTILS}/share/man \
+              ${OFFLINE_MAIN}/share/man
+do
+  if [ -d $mandir ]
+  then
+    manpath=$mandir:$manpath
+  fi
+done
+
+
+
+
+
+# finally prepend . to path/ldpath
+
 path=.:$path
 ldpath=.:$ldpath
 
@@ -348,7 +352,6 @@ ldpath=.:$ldpath
 PATH=${path}
 LD_LIBRARY_PATH=${ldpath}
 MANPATH=$manpath
-
 
 # in case we want to append these paths opt_a=1
 if [ $opt_a != 0 ] 

@@ -50,6 +50,7 @@ end
 if ($opt_n) then
   unsetenv CERN*
   unsetenv CALIBRATIONROOT
+  unsetenv COVERITY_ROOT
   unsetenv CVSROOT
   unsetenv G4*
   unsetenv LHAPATH
@@ -60,6 +61,7 @@ if ($opt_n) then
   unsetenv OPT_*
   unsetenv PARASOFT
   unsetenv PERL5LIB
+  unsetenv PGHOST
   unsetenv PYTHIA8
   unsetenv ROOTSYS
   unsetenv SIMULATION_MAIN
@@ -71,7 +73,9 @@ endif
 set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
 
 # turn off opengl direct rendering bc problems for nx
-setenv LIBGL_ALWAYS_INDIRECT 1
+# that problem seems to have been fixed, leave this in here since it
+# took a long time to figure this one out
+#setenv LIBGL_ALWAYS_INDIRECT 1
 
 # turn off gtk warning about accessibility bus
 setenv NO_AT_BRIDGE 1
@@ -90,6 +94,7 @@ else
 endif
 if ($?MANPATH) then
     setenv ORIG_MANPATH ${MANPATH}
+    unsetenv MANPATH
 else
     unsetenv ORIG_MANPATH
 endif
@@ -152,7 +157,7 @@ endif
 if (-d $OFFLINE_MAIN) then
   set here=`pwd`
   cd $OFFLINE_MAIN
-  set there=`pwd`
+  set there=`pwd -P`
   setenv OFFLINE_MAIN `echo $there | sed "s/@sys/$sysname/g"`
   cd $here
 endif
@@ -173,98 +178,31 @@ if (! $?ROOTSYS) then
     else    
       setenv ROOTSYS $OPT_SPHENIX/root
     endif    
+    set here=`pwd`
+    cd $ROOTSYS
+    set there=`pwd -P`
+    setenv ROOTSYS `echo $there | sed "s/@sys/$sysname/g"`
+    cd $here
 endif
 
-#Pythia8
-if (-d $OFFLINE_MAIN/share/Pythia8) then
-  setenv PYTHIA8 $OFFLINE_MAIN/share/Pythia8
-endif
-
-if (! $?PGHOST) then
-  setenv PGHOST phnxdbrcf2
-  setenv PGUSER phnxrc
-  setenv PG_PHENIX_DBNAME Phenix_phnxdbrcf2_C
-endif
-
-# Basic PATH
-switch ($HOSTTYPE) 
-  case *linux*:
-    set path = (/usr/lib64/qt-3.3/bin /usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
-    set manpath = `/usr/bin/man --path`
-    breaksw
-
-endsw
-
-set path = (. $path)
-set ldpath = .
-
-if (-d $OPT_SPHENIX/bin) then
-  set path = ($OPT_SPHENIX/bin $path)
-endif
-
-if (-d $OPT_SPHENIX/lib) then
-  set ldpath = ${ldpath}:${OPT_SPHENIX}/lib
-endif
-
-if (-d $OPT_UTILS/bin) then
-  set path = ($OPT_UTILS/bin $path)
-endif
-if (-d $OPT_UTILS/lib) then
-  set ldpath = ${ldpath}:${OPT_UTILS}/lib
-endif
-
-
-if (-d ${OPT_SPHENIX}/man) then
-    set manpath = ${manpath}:${OPT_SPHENIX}/man
-endif
-
-if (-d ${OPT_SPHENIX}/share/man) then
-    set manpath = ${manpath}:${OPT_SPHENIX}/share/man
-endif
-
-foreach d (${ONLINE_MAIN}/bin ${OFFLINE_MAIN}/bin ${ROOTSYS}/bin)
-  if (-d $d) then
-    set path = ($path $d)
+#find root lib and bin dir
+if (-f $ROOTSYS/bin/root-config) then
+  set rootlibdir_tmp = `root-config --libdir`
+  if (-d $rootlibdir_tmp) then
+    set here=`pwd`
+    cd $rootlibdir_tmp
+    set there=`pwd -P`
+    set rootlibdir = `echo $there | sed "s/@sys/$sysname/g"`
+    cd $here
   endif
-end
-
-set rootlibdir_tmp = `root-config --libdir`
-if (-d $rootlibdir_tmp) then
-  set here=`pwd`
-  cd $rootlibdir_tmp
-  set there=`pwd`
-  set rootlibdir = `echo $there | sed "s/@sys/$sysname/g"`
-  cd $here
-endif
-
-
-# add utils
-set ldpath = ${ldpath}:
-foreach d (/usr/local/lib64 /usr/lib64 \
-           ${ONLINE_MAIN}/lib ${OFFLINE_MAIN}/lib ${rootlibdir} )
-  if (-d $d) then
-   set ldpath = ${ldpath}:${d}
+  set rootbindir_tmp = `root-config --bindir`
+  if (-d $rootbindir_tmp) then
+    set here=`pwd`
+    cd $rootbindir_tmp
+    set there=`pwd -P`
+    set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
+    cd $here
   endif
-end
-
-# Set up Insure++, if we have it
-if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.0
-endif
-
-if (-d ${PARASOFT}/bin) then
-  set path = ($path ${PARASOFT}/bin)
-  set ldpath = ${ldpath}:${PARASOFT}/lib
-endif
-
-# dCache, if available
-if (-d /afs/rhic.bnl.gov/opt/d-cache/dcap/bin) then
-    set path = ($path /afs/rhic.bnl.gov/opt/d-cache/dcap/bin)
-endif
-
-#add coverity
-if (-d /afs/rhic.bnl.gov/app/coverity-8.7.1/bin) then
-  set path = ($path  /afs/rhic.bnl.gov/app/coverity-8.7.1/bin)
 endif
 
 # Add Geant4
@@ -280,7 +218,7 @@ if (-d $G4_MAIN) then
 # normalize G4_MAIN to /opt/phenix/geant4.Version
     set here=`pwd`
     cd $G4_MAIN
-    set there=`pwd`
+    set there=`pwd -P`
     setenv G4_MAIN `echo $there | sed "s/@sys/$sysname/g"`
     cd $here
 # this is for later possible use, extract the main version number
@@ -297,19 +235,79 @@ if (-d $G4_MAIN) then
         endif
     endif
 
-    if (-d ${G4_MAIN}/bin) then
-	set  path = ($path ${G4_MAIN}/bin)
-    endif
-    if (-d ${G4_MAIN}/lib64) then
-	set  ldpath = ${ldpath}:${G4_MAIN}/lib64
-    endif
-
 endif
 
-#LHAPDF
-if (-d ${OPT_SPHENIX}/lhapdf-5.9.1/lib) then
-  set  ldpath = ${ldpath}:${OPT_SPHENIX}/lhapdf-5.9.1/lib
+#Pythia8
+if (-d $OFFLINE_MAIN/share/Pythia8) then
+  setenv PYTHIA8 $OFFLINE_MAIN/share/Pythia8
 endif
+
+# Set up Insure++, if we have it
+if (! $?PARASOFT) then
+  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.0
+endif
+
+# Coverity
+if (! $?COVERITY_ROOT) then
+  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-8.7.1
+endif
+
+#database servers, not used right now
+if (! $?PGHOST) then
+  setenv PGHOST phnxdbrcf2
+  setenv PGUSER phnxrc
+  setenv PG_PHENIX_DBNAME Phenix_phnxdbrcf2_C
+endif
+
+# set initial paths, all following get prepended
+set path = (/usr/lib64/qt-3.3/bin /usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
+set manpath = `/usr/bin/man --path`
+
+set ldpath = /usr/local/lib64:/usr/lib64
+
+# loop over all bin dirs and prepend to path
+foreach bindir ($COVERITY_ROOT/bin \
+                ${PARASOFT}/bin \
+                $G4_MAIN/bin \
+                $rootbindir \
+                $OPT_SPHENIX/bin \
+                $OPT_UTILS/bin \
+                $ONLINE_MAIN/bin \
+                ${OFFLINE_MAIN}/bin)
+  if (-d $bindir) then
+    set path = ($bindir $path)
+  endif
+end
+
+#loop over all libdirs and prepend to ldpath
+foreach libdir (${PARASOFT}/lib \
+                ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
+                ${G4_MAIN}/lib64 \
+                ${rootlibdir} \
+                $OPT_SPHENIX/lib \
+                $OPT_UTILS/lib \
+                ${ONLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib)
+  if (-d $libdir) then
+    set ldpath = ${libdir}:${ldpath}
+  endif
+end
+# loop over all man dirs and prepend to manpath
+foreach mandir (${ROOTSYS}/man \
+                ${OPT_SPHENIX}/man \
+                ${OPT_SPHENIX}/share/man \
+                ${OPT_UTILS}/man \
+                ${OPT_UTILS}/share/man \
+                $OFFLINE_MAIN/share/man)
+  if (-d $mandir) then
+    set manpath = ${mandir}:${manpath}
+  endif
+end
+
+# finally prepend . to path/ldpath
+
+set path = (. $path)
+set ldpath=.:${ldpath}
 
 # Set some actual environment vars
 if ($opt_a) then
