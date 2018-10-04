@@ -43,7 +43,9 @@ foreach arg ($*)
     endsw
 end
 
-
+# STARs environment contains an alias for pwd which
+# throws a monkey wrench into pwd -P
+unalias pwd
 
 # if -n unset all relevant environment variables
 # also from phenix setup script so we can switch
