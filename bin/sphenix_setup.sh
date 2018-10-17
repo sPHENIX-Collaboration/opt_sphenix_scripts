@@ -103,14 +103,14 @@ else
     unset ORIG_MANPATH
 fi
 
-if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
+if [[ -z "$OPT_SPHENIX" && -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core ]]
 then
-  export OPT_SPHENIX=/opt/sphenix/core
+  export OPT_SPHENIX=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core
 fi
 
-if [[ -z "$OPT_UTILS" && -d /opt/sphenix/utils ]]
+if [[ -z "$OPT_UTILS" && -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils ]]
 then
-    export OPT_UTILS=/opt/sphenix/utils
+    export OPT_UTILS=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils
 fi
 
 # set site wide compiler options (no rpath hardcoding)
@@ -137,9 +137,9 @@ then
    fi
 fi
 
-if [[ -z "$XERCESCROOT" && -d /opt/sphenix/core ]]
+if [[ -z "$XERCESCROOT" && -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core ]]
 then
-  export XERCESCROOT=/opt/sphenix/core
+  export XERCESCROOT=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core
 fi
 
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
@@ -149,11 +149,11 @@ fi
 
 if [ -z "$OFFLINE_MAIN" ]
 then
-  if [ ! -d /afs/rhic.bnl.gov/sphenix/new/../$opt_v ]
+  if [ ! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v ]
   then
     opt_v="new"
   fi
-  export OFFLINE_MAIN=/afs/rhic.bnl.gov/sphenix/new/../$opt_v/
+  export OFFLINE_MAIN=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
 fi
 
 if [[ $OFFLINE_MAIN = *insure* ]]
@@ -241,7 +241,7 @@ fi
 
 if [ -d $G4_MAIN ]
 then
-# normalize G4_MAIN to /opt/phenix/geant4.Version
+# normalize G4_MAIN to /opt/sphenix/core/geant4.Version
     here=`pwd`
     cd $G4_MAIN
     export G4_MAIN=`pwd -P`
