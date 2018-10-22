@@ -137,9 +137,9 @@ then
    fi
 fi
 
-if [[ -z "$XERCESCROOT" && -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core ]]
+if [[ -z "$XERCESCROOT" && -d ${OPT_SPHENIX}/geant4 ]]
 then
-  export XERCESCROOT=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core
+  export XERCESCROOT=${OPT_SPHENIX}/geant4
 fi
 
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
