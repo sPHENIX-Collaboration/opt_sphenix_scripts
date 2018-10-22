@@ -132,7 +132,7 @@ if (! $?PERL5LIB) then
 endif
 
 if (! $?XERCESCROOT) then
-  setenv XERCESCROOT /opt/sphenix/core
+  setenv XERCESCROOT ${OPT_SPHENIX}/geant4
 endif
 
 if (! $?LHAPATH) then
