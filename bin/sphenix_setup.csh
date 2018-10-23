@@ -102,14 +102,14 @@ else
 endif
 
 if (! $?OPT_SPHENIX) then
-  if (-d /opt/sphenix/core) then
-    setenv OPT_SPHENIX /opt/sphenix/core
+  if (-d /afs/rhic.bnl.gov/opt/sphenix/core) then
+    setenv OPT_SPHENIX /afs/rhic.bnl.gov/opt/sphenix/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /opt/sphenix/utils) then
-    setenv OPT_UTILS /opt/sphenix/utils
+  if (-d /afs/rhic.bnl.gov/opt/sphenix/utils) then
+    setenv OPT_UTILS /afs/rhic.bnl.gov/opt/sphenix/utils
   endif
 endif
 
