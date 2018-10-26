@@ -103,14 +103,14 @@ else
     unset ORIG_MANPATH
 fi
 
-if [[ -z "$OPT_SPHENIX" && -d /afs/rhic.bnl.gov/opt/sphenix/core ]]
+if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
 then
-  export OPT_SPHENIX=/afs/rhic.bnl.gov/opt/sphenix/core
+  export OPT_SPHENIX=/opt/sphenix/core
 fi
 
-if [[ -z "$OPT_UTILS" && -d /afs/rhic.bnl.gov/opt/sphenix/utils ]]
+if [[ -z "$OPT_UTILS" && -d /opt/sphenix/utils ]]
 then
-    export OPT_UTILS=/afs/rhic.bnl.gov/opt/sphenix/utils
+    export OPT_UTILS=/opt/sphenix/utils
 fi
 
 # set site wide compiler options (no rpath hardcoding)
