@@ -131,10 +131,6 @@ if (! $?PERL5LIB) then
    endif
 endif
 
-if (! $?XERCESCROOT) then
-  setenv XERCESCROOT ${OPT_SPHENIX}/geant4
-endif
-
 if (! $?LHAPATH) then
   setenv LHAPATH ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
 endif
@@ -237,6 +233,9 @@ if (-d $G4_MAIN) then
         endif
     endif
 
+endif
+if (! $?XERCESCROOT) then
+  setenv XERCESCROOT $G4_MAIN
 endif
 
 #Pythia8
