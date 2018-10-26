@@ -137,11 +137,6 @@ then
    fi
 fi
 
-if [[ -z "$XERCESCROOT" && -d ${OPT_SPHENIX}/geant4 ]]
-then
-  export XERCESCROOT=${OPT_SPHENIX}/geant4
-fi
-
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
 then
   export LHAPATH=${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
@@ -263,6 +258,12 @@ then
 	ldpath=${G4_MAIN}/lib64:$ldpath
     fi
 fi
+
+if [[ -z "$XERCESCROOT" ]]
+then
+  export XERCESCROOT=${G4_MAIN}
+fi
+
 
 #Pythia8
 if [[ -z PYTHIA8 && -d $OFFLINE_MAIN/share/Pythia8 ]]
