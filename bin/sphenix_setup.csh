@@ -52,6 +52,7 @@ unalias pwd
 if ($opt_n) then
   unsetenv CERN*
   unsetenv CALIBRATIONROOT
+  unsetenv CONFIG_SITE
   unsetenv COVERITY_ROOT
   unsetenv CVSROOT
   unsetenv G4*
@@ -68,6 +69,7 @@ if ($opt_n) then
   unsetenv ROOTSYS
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
+  unsetenv XERCESCROOT
 endif
 
 # set afs sysname to replace @sys so links stay functional even if

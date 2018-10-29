@@ -67,6 +67,7 @@ if [ $opt_n != 0 ]
   unset ROOTSYS
   unset SIMULATION_MAIN
   unset TSEARCHPATH
+  unset XERCESCROOT
 fi
 
 # set afs sysname to replace @sys so links stay functional even if
