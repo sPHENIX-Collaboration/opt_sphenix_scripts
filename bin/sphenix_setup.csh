@@ -66,6 +66,7 @@ if ($opt_n) then
   unsetenv PERL5LIB
   unsetenv PGHOST
   unsetenv PYTHIA8
+  unsetenv PYTHONPATH
   unsetenv ROOTSYS
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
@@ -131,6 +132,10 @@ if (! $?PERL5LIB) then
        setenv PERL5LIB ${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
      endif
    endif
+endif
+
+if (! $?PYTHONPATH) then
+  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages
 endif
 
 if (! $?LHAPATH) then

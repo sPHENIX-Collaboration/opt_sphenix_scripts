@@ -64,6 +64,7 @@ if [ $opt_n != 0 ]
   unset PERL5LIB
   unset PGHOST
   unset PYTHIA8
+  unset PYTHONPATH
   unset ROOTSYS
   unset SIMULATION_MAIN
   unset TSEARCHPATH
@@ -138,6 +139,10 @@ then
    fi
 fi
 
+if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages ]]
+then
+  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages
+fi
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
 then
   export LHAPATH=${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
