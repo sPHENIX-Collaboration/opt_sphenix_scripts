@@ -134,10 +134,6 @@ if (! $?PERL5LIB) then
    endif
 endif
 
-if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages
-endif
-
 if (! $?LHAPATH) then
   setenv LHAPATH ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
 endif
@@ -208,6 +204,11 @@ if (-f $ROOTSYS/bin/root-config) then
     set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
     cd $here
   endif
+endif
+
+#add our python packages and path to ROOT.py
+if (! $?PYTHONPATH) then
+  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages:${ROOTSYS}/lib
 endif
 
 # Add Geant4
