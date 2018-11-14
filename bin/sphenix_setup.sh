@@ -64,6 +64,7 @@ if [ $opt_n != 0 ]
   unset PERL5LIB
   unset PGHOST
   unset PYTHIA8
+  unset PYTHONPATH
   unset ROOTSYS
   unset SIMULATION_MAIN
   unset TSEARCHPATH
@@ -145,11 +146,11 @@ fi
 
 if [ -z "$OFFLINE_MAIN" ]
 then
-  if [ ! -d /afs/rhic.bnl.gov/sphenix/new/../$opt_v ]
+  if [ ! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v ]
   then
     opt_v="new"
   fi
-  export OFFLINE_MAIN=/afs/rhic.bnl.gov/sphenix/new/../$opt_v/
+  export OFFLINE_MAIN=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
 fi
 
 if [[ $OFFLINE_MAIN = *insure* ]]
@@ -223,6 +224,10 @@ then
   fi
 fi
 
+if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages ]]
+then
+  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages:${ROOTSYS}/lib
+fi
 
 # Add Geant4
 if [ -z $G4_MAIN ] 
@@ -237,7 +242,7 @@ fi
 
 if [ -d $G4_MAIN ]
 then
-# normalize G4_MAIN to /opt/phenix/geant4.Version
+# normalize G4_MAIN to /opt/sphenix/core/geant4.Version
     here=`pwd`
     cd $G4_MAIN
     export G4_MAIN=`pwd -P`
@@ -259,6 +264,12 @@ then
 	ldpath=${G4_MAIN}/lib64:$ldpath
     fi
 fi
+if [[ -z "$XERCESCROOT" ]]
+then
+  export XERCESCROOT=${G4_MAIN}
+fi
+
+
 if [[ -z "$XERCESCROOT" ]]
 then
   export XERCESCROOT=${G4_MAIN}
