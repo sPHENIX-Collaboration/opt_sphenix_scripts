@@ -354,3 +354,9 @@ setenv MANPATH `echo -n $MANPATH | awk -v RS=: -v ORS=: '! arr[$0]++'`
 setenv PATH `echo -n $PATH | sed 's/.$//'`
 setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
+
+#set ROOT_INCLUDE_PATH
+while ($# > 0)
+shift
+end
+source $OPT_SPHENIX/bin/setup_root6.csh

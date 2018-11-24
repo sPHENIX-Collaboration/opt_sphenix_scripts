@@ -400,3 +400,8 @@ unset manpath
 export PATH
 export LD_LIBRARY_PATH
 export MANPATH
+while (( "$#" )); 
+do
+  shift
+done
+source $OPT_SPHENIX/bin/setup_root6.sh 
