@@ -2,6 +2,7 @@
 unsetenv ROOT_INCLUDE_PATH
 setenv EVT_LIB $ROOTSYS/lib
 set first=1
+# make sure our include dirs come first in ROOT_INCLUDE_PATH
 if ($#argv > 0) then
   foreach arg ($*)
     foreach incdir (`find $arg/include -maxdepth 1 -type d -print`)
