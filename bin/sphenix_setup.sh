@@ -404,4 +404,4 @@ while (( "$#" ));
 do
   shift
 done
-source /opt/sphenix/core/bin/setup_root6.sh 
+source $OPT_SPHENIX/bin/setup_root6.sh 
