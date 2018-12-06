@@ -226,7 +226,7 @@ fi
 
 if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages ]]
 then
-  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages:${ROOTSYS}/lib
+  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages:${OPT_UTILS}/lib/python3.6/site-packages:${ROOTSYS}/lib
 fi
 
 # Add Geant4
