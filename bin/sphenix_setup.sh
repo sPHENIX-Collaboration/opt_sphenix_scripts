@@ -116,11 +116,18 @@ then
 fi
 
 # set site wide compiler options (no rpath hardcoding)
-if [[ -z "$CONFIG_SITE" && -f ${OPT_SPHENIX}/etc/config.site ]]
+if [[ -z "$CONFIG_SITE" ]]
 then
-  export CONFIG_SITE=${OPT_SPHENIX}/etc/config.site
+  if [[ $opt_v = "debug" && -f ${OPT_SPHENIX}/etc/config_debug.site ]]
+  then
+    export CONFIG_SITE=${OPT_SPHENIX}/etc/config_debug.site
+  else
+    if [ -f ${OPT_SPHENIX}/etc/config_debug.site ]
+    then
+      export CONFIG_SITE=${OPT_SPHENIX}/etc/config.site
+    fi
+  fi
 fi
-
 # Perl
 if [ -z "$PERL5LIB" ]
 then

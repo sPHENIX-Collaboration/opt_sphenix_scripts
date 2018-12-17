@@ -117,8 +117,16 @@ if (! $?OPT_UTILS) then
 endif
 
 # set site wide compiler options (no rpath hardcoding)
-if (-f ${OPT_SPHENIX}/etc/config.site) then
-  setenv CONFIG_SITE ${OPT_SPHENIX}/etc/config.site
+if (! $?CONFIG_SITE) then
+  if ($opt_v =~ "debug" ) then
+    if (-f ${OPT_SPHENIX}/etc/config_debug.site) then
+      setenv CONFIG_SITE ${OPT_SPHENIX}/etc/config_debug.site
+    endif
+  else
+    if (-f ${OPT_SPHENIX}/etc/config.site) then
+      setenv CONFIG_SITE ${OPT_SPHENIX}/etc/config.site
+    endif
+  endif
 endif
 # Perl
 if (! $?PERL5LIB) then
