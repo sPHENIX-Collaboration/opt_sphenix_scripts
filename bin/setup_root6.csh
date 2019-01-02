@@ -4,24 +4,26 @@ setenv EVT_LIB $ROOTSYS/lib
 set first=1
 set offline_main_done=0
 # make sure our include dirs come first in ROOT_INCLUDE_PATH, 
-# use OFFLINE_MAIN only if it comes in the list of arguments
+# use OFFLINE_MAIN only if it comes in the list of arguments, flag it as used
 if ($#argv > 0) then
   foreach arg ($*)
     if ($arg =~ *"$OFFLINE_MAIN"*) then
       set offline_main_done=1
     endif
-    foreach incdir (`find $arg/include -maxdepth 1 -type d -print`)
-      if (-d $incdir) then
-        if ($first == 1) then
-          setenv ROOT_INCLUDE_PATH $incdir
-          set first=0
-        else
-          if ($incdir !~ {*CGAL}) then
-            setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
+    if (-d $arg) then
+      foreach incdir (`find $arg/include -maxdepth 1 -type d -print`)
+        if (-d $incdir) then
+          if ($first == 1) then
+            setenv ROOT_INCLUDE_PATH $incdir
+            set first=0
+          else
+            if ($incdir !~ {*CGAL}) then
+              setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
+            endif
           endif
         endif
-      endif
-    end
+      end
+    endif
   end
 endif  
 # add OFFLINE_MAIN include paths by default if not already done
