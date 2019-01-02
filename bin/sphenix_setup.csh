@@ -363,8 +363,5 @@ setenv PATH `echo -n $PATH | sed 's/.$//'`
 setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
-#set ROOT_INCLUDE_PATH
-while ($# > 0)
-shift
-end
-source $OPT_SPHENIX/bin/setup_root6.csh
+#set ROOT_INCLUDE_PATH for root6
+source $OPT_SPHENIX/bin/setup_root6.csh $OFFLINE_MAIN
