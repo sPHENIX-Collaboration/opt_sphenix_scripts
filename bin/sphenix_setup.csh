@@ -216,7 +216,7 @@ endif
 
 #add our python packages and path to ROOT.py
 if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.7/site-packages:${OPT_UTILS}/lib/python3.7/site-packages:${ROOTSYS}/lib
+  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.6/site-packages:${OPT_UTILS}/lib/python3.6/site-packages:${ROOTSYS}/lib
 endif
 
 # Add Geant4
