@@ -237,7 +237,7 @@ then
 fi
 
 # Add Geant4
-if [ -z $G4_MAIN ] 
+if [ -z "$G4_MAIN" ] 
 then
     if [ -d $OFFLINE_MAIN/geant4 ]
     then
@@ -284,19 +284,19 @@ fi
 
 
 #Pythia8
-if [[ -z PYTHIA8 && -d $OFFLINE_MAIN/share/Pythia8 ]]
+if [[ -z "$PYTHIA8" && -d $OFFLINE_MAIN/share/Pythia8 ]]
 then
   export PYTHIA8=$OFFLINE_MAIN/share/Pythia8
 fi
 
 # Set up Insure++, if we have it
-if [ -z  $PARASOFT ] 
+if [ -z  "$PARASOFT" ] 
 then
   export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.0
 fi
 
 # Coverity
-if [ -z $COVERITY_ROOT ]
+if [ -z "$COVERITY_ROOT" ]
 then
   export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-8.7.1
 fi
@@ -376,11 +376,11 @@ MANPATH=$manpath
 if [ $opt_a != 0 ] 
 then
     export PATH=${ORIG_PATH}:${PATH}
-    if [ ! -z $ORIG_LD_LIBRARY_PATH ] 
+    if [ ! -z "$ORIG_LD_LIBRARY_PATH" ] 
     then
 	export LD_LIBRARY_PATH=$ORIG_LD_LIBRARY_PATH:${LD_LIBRARY_PATH}
     fi
-    if [ ! -z $MANPATH ]
+    if [ ! -z "$MANPATH" ]
     then
 	export MANPATH=${ORIG_MANPATH}:${MANPATH}
     fi
