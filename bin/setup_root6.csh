@@ -9,37 +9,40 @@ if ($#argv > 0) then
   foreach arg ($*)
     if ($arg =~ *"$OFFLINE_MAIN"*) then
       set offline_main_done=1
-    endif
-    if (-d $arg) then
-      foreach incdir (`find $arg/include -maxdepth 1 -type d -print`)
-        if (-d $incdir) then
-          if ($first == 1) then
-            setenv ROOT_INCLUDE_PATH $incdir
-            set first=0
-          else
-            if ($incdir !~ {*CGAL}) then
-              setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
+      if ($first == 1) then
+        setenv ROOT_INCLUDE_PATH $OFFLINE_MAIN/include
+        set first=0
+      else
+        setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/include
+      endif
+      setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
+    else
+      if (-d $arg) then
+        foreach incdir (`find $arg/include -maxdepth 1 -type d -print`)
+          if (-d $incdir) then
+            if ($first == 1) then
+              setenv ROOT_INCLUDE_PATH $incdir
+              set first=0
+            else
+              if ($incdir !~ {*CGAL}) then
+                setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
+              endif
             endif
           endif
-        endif
-      end
+        end
+      endif
     endif
   end
 endif  
 # add OFFLINE_MAIN include paths by default if not already done
 if ($offline_main_done == 0) then
-  foreach incdir (`find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`)
-    if (-d $incdir) then
-      if ($first == 1) then
-        setenv ROOT_INCLUDE_PATH $incdir
-        set first=0
-      else
-        if ($incdir !~ {*CGAL}) then
-          setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
-        endif
-      endif
-    endif
-  end
+  if ($first == 1) then
+    setenv ROOT_INCLUDE_PATH $OFFLINE_MAIN/include
+    set first=0
+  else
+    setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/include
+  endif
+  setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
 endif
 # add G4 include path
 setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$G4_MAIN/include

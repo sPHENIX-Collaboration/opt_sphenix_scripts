@@ -12,46 +12,48 @@ then
     if [ $arg = "$OFFLINE_MAIN" ]
     then
       offline_main_done=1
-    fi
-    if [ -d $arg ]
-    then
-      for incdir in `find $arg/include -maxdepth 1 -type d -print`
-      do
-        if [ -d $incdir ] 
-        then
-          if [ $first == 1 ] 
+      if [ $first == 1 ] 
+      then
+        root_include_path=$OFFLINE_MAIN/include
+        first=0
+      else
+        root_include_path=$root_include_path:$OFFLINE_MAIN/include
+      fi
+root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
+    else
+      if [ -d $arg ]
+      then
+        for incdir in `find $arg/include -maxdepth 1 -type d -print`
+        do
+          if [ -d $incdir ] 
           then
-            root_include_path=$incdir
-            first=0
-          else
-            if [[ $incdir != *"CGAL"* ]]
+            if [ $first == 1 ] 
             then
-              root_include_path=$root_include_path:$incdir
+              root_include_path=$incdir
+              first=0
+            else
+              if [[ $incdir != *"CGAL"* ]]
+              then
+                root_include_path=$root_include_path:$incdir
+              fi
             fi
           fi
-        fi
-      done
+        done
+      fi
     fi
   done
 fi 
 if [ $offline_main_done == 0 ]
 then
-  for incdir in `find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`
-  do
-    if [ -d $incdir ]
-    then
-      if [ $first == 1 ]
-      then
-        root_include_path=$incdir
-        first=0
-      else
-        if [[ $incdir != *"CGAL"* ]]
-        then
-          root_include_path=$root_include_path:$incdir
-        fi
-      fi
-    fi
-  done
+  offline_main_done=1
+  if [ $first == 1 ] 
+  then
+    root_include_path=$OFFLINE_MAIN/include
+    first=0
+  else
+    root_include_path=$root_include_path:$OFFLINE_MAIN/include
+  fi
+  root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
 fi
 root_include_path=$root_include_path:$G4_MAIN/include
 # add G4 include path
