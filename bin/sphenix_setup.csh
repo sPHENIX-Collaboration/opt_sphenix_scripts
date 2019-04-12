@@ -271,7 +271,7 @@ endif
 
 # Coverity
 if (! $?COVERITY_ROOT) then
-  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-8.7.1
+  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-2019.03
 endif
 
 #database servers, not used right now
