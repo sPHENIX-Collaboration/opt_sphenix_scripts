@@ -19,7 +19,7 @@ then
       else
         root_include_path=$root_include_path:$OFFLINE_MAIN/include
       fi
-root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
+root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase:$OFFLINE_MAIN/include/trackbase_historic
     else
       if [ -d $arg ]
       then
@@ -53,7 +53,7 @@ then
   else
     root_include_path=$root_include_path:$OFFLINE_MAIN/include
   fi
-  root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase
+  root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase:$OFFLINE_MAIN/include/trackbase_historic
 fi
 root_include_path=$root_include_path:$G4_MAIN/include
 # add G4 include path
