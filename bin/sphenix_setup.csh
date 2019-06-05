@@ -266,7 +266,7 @@ endif
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.0
+  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.2
 endif
 
 # Coverity
