@@ -68,6 +68,7 @@ if ($opt_n) then
   unsetenv PYTHIA8
   unsetenv PYTHONPATH
   unsetenv ROOTSYS
+  unsetenv SARTRE_DIR
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
   unsetenv XERCESCROOT
@@ -260,8 +261,17 @@ endif
 
 
 #Pythia8
-if (-d $OFFLINE_MAIN/share/Pythia8) then
-  setenv PYTHIA8 $OFFLINE_MAIN/share/Pythia8
+if (! $?PYTHIA8) then
+  if (-d $OFFLINE_MAIN/share/Pythia8) then
+    setenv PYTHIA8 $OFFLINE_MAIN/share/Pythia8
+  endif
+endif
+
+#Sartre
+if (! $?SARTRE_DIR) then
+  if (-d $OFFLINE_MAIN/sartre) then
+    setenv SARTRE_DIR $OFFLINE_MAIN/sartre
+  endif
 endif
 
 # Set up Insure++, if we have it
