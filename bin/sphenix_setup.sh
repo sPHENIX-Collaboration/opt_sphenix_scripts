@@ -66,6 +66,7 @@ if [ $opt_n != 0 ]
   unset PYTHIA8
   unset PYTHONPATH
   unset ROOTSYS
+  unset SARTRE_DIR
   unset SIMULATION_MAIN
   unset TSEARCHPATH
   unset XERCESCROOT
@@ -287,6 +288,12 @@ fi
 if [[ -z "$PYTHIA8" && -d $OFFLINE_MAIN/share/Pythia8 ]]
 then
   export PYTHIA8=$OFFLINE_MAIN/share/Pythia8
+fi
+
+#Sartre
+if [[ -z "SARTRE_DIR" && -d $OFFLINE_MAIN/sartre ]]
+then
+  export SARTRE_DIR=$OFFLINE_MAIN/sartre
 fi
 
 # Set up Insure++, if we have it
