@@ -291,7 +291,7 @@ then
 fi
 
 #Sartre
-if [[ -z "SARTRE_DIR" && -d $OFFLINE_MAIN/sartre ]]
+if [[ -z "$SARTRE_DIR" && -d $OFFLINE_MAIN/sartre ]]
 then
   export SARTRE_DIR=$OFFLINE_MAIN/sartre
 fi
