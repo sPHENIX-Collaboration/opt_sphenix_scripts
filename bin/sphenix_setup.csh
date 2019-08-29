@@ -374,4 +374,4 @@ setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
-source $OPT_SPHENIX/bin/setup_root6.csh $OFFLINE_MAIN
+source $OPT_SPHENIX/bin/setup_root6_include_path.csh $OFFLINE_MAIN

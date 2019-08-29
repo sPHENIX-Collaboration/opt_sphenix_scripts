@@ -5,7 +5,7 @@ then
   firstb=1
   ldpath=""
   bpath=""
-  source /opt/sphenix/core/bin/setup_root6.sh $@
+  source /opt/sphenix/core/bin/setup_root6_include_path.sh $@
   for arg in "$@"
   do
     libpath=$arg/lib
