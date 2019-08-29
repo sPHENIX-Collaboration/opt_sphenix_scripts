@@ -1,6 +1,6 @@
 #! /bin/csh -f -x
 if ($#argv > 0) then
-  source /opt/sphenix/core/bin/setup_root6.csh $*
+  source /opt/sphenix/core/bin/setup_root6_include_path.csh $*
   set ldpath = ""
   set bpath = ""
   set first=1
