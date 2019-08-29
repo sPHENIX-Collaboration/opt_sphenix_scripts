@@ -12,40 +12,31 @@ then
     if [ $arg = "$OFFLINE_MAIN" ]
     then
       offline_main_done=1
-      if [ $first == 1 ] 
-      then
-        root_include_path=$OFFLINE_MAIN/include
-        first=0
-      else
-        root_include_path=$root_include_path:$OFFLINE_MAIN/include
-      fi
-root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/g4main:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase:$OFFLINE_MAIN/include/trackbase_historic
-    else
-      if [ -d $arg ]
-      then
-        for incdir in `find $arg/include -maxdepth 1 -type d -print`
-        do
-          if [ -d $incdir ] 
+    fi
+    if [ -d $arg ]
+    then
+      for incdir in `find $arg/include -maxdepth 1 -type d -print`
+      do
+        if [ -d $incdir ]
+        then
+          if [ $first == 1 ]
           then
-            if [ $first == 1 ] 
+            root_include_path=$incdir
+            first=0
+          else
+            if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* ]]
             then
-              root_include_path=$incdir
-              first=0
-            else
-              if [[ $incdir != *"CGAL"* ]]
-              then
-                root_include_path=$root_include_path:$incdir
-              fi
+              root_include_path=$root_include_path:$incdir
             fi
           fi
-        done
-      fi
+        fi
+      done
     fi
   done
 fi 
 if [ $offline_main_done == 0 ]
 then
-  if [ $first == 1 ] 
+  if [ $first == 1 ]
   then
     root_include_path=$OFFLINE_MAIN/include
   else
@@ -53,9 +44,9 @@ then
   fi
   for incdir in `find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`
   do
-    if [ -d $incdir ] 
+    if [ -d $incdir ]
     then
-      if [[ $incdir != *"CGAL"* ]]
+      if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* ]]
       then
         root_include_path=$root_include_path:$incdir
       fi
