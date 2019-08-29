@@ -45,15 +45,22 @@ root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/
 fi 
 if [ $offline_main_done == 0 ]
 then
-  offline_main_done=1
   if [ $first == 1 ] 
   then
     root_include_path=$OFFLINE_MAIN/include
-    first=0
   else
     root_include_path=$root_include_path:$OFFLINE_MAIN/include
   fi
-  root_include_path=$root_include_path:$OFFLINE_MAIN/include/eigen3:$OFFLINE_MAIN/include/GenFit:$OFFLINE_MAIN/include/g4detectors:$OFFLINE_MAIN/include/g4main:$OFFLINE_MAIN/include/phhepmc:$OFFLINE_MAIN/include/calobase:$OFFLINE_MAIN/include/trackbase_historic
+  for incdir in `find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`
+  do
+    if [ -d $incdir ] 
+    then
+      if [[ $incdir != *"CGAL"* ]]
+      then
+        root_include_path=$root_include_path:$incdir
+      fi
+    fi
+  done
 fi
 root_include_path=$root_include_path:$G4_MAIN/include
 # add G4 include path
