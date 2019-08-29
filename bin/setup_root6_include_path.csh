@@ -17,7 +17,7 @@ if ($#argv > 0) then
             setenv ROOT_INCLUDE_PATH $incdir
             set first=0
           else
-            if ($incdir !~ {*CGAL}) then
+            if ($incdir !~ {*CGAL} && $incdir !~ {*Vc}) then
               setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
             endif
           endif
@@ -35,7 +35,7 @@ if ($offline_main_done == 0) then
   endif
   foreach incdir (`find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`)
     if (-d $incdir) then
-      if ($incdir !~ {*CGAL}) then
+      if ($incdir !~ {*CGAL} && $incdir !~ {*Vc}) then
         setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$incdir
       endif
     endif
