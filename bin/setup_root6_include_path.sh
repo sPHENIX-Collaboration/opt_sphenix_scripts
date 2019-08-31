@@ -24,7 +24,7 @@ then
             root_include_path=$incdir
             first=0
           else
-            if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* ]]
+            if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* && $incdir != *"rave"* ]]
             then
               root_include_path=$root_include_path:$incdir
             fi
@@ -46,7 +46,7 @@ then
   do
     if [ -d $incdir ]
     then
-      if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* ]]
+      if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* && $incdir != *"rave"* ]]
       then
         root_include_path=$root_include_path:$incdir
       fi
