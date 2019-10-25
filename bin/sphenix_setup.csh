@@ -106,16 +106,17 @@ else
 endif
 
 if (! $?OPT_SPHENIX) then
-  if (-d /opt/sphenix/core) then
-    setenv OPT_SPHENIX /opt/sphenix/core
+  if (-d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core) then
+    setenv OPT_SPHENIX /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /opt/sphenix/utils) then
-    setenv OPT_UTILS /opt/sphenix/utils
+  if (-d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils) then
+    setenv OPT_UTILS /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils
   endif
 endif
+
 
 # set site wide compiler options (no rpath hardcoding)
 if (! $?CONFIG_SITE) then
@@ -149,10 +150,10 @@ endif
 
 # OFFLINE
 if (! $?OFFLINE_MAIN) then
-  if (! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v) then
+  if (! -d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v) then
     set opt_v = "new"
   endif
-  setenv OFFLINE_MAIN /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
+  setenv OFFLINE_MAIN /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v
 endif
 
 if ($OFFLINE_MAIN =~ *"insure"* ) then
@@ -375,3 +376,9 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
 source $OPT_SPHENIX/bin/setup_root6_include_path.csh $OFFLINE_MAIN
+
+# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
+
+if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif

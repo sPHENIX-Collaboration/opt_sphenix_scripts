@@ -106,15 +106,17 @@ else
     unset ORIG_MANPATH
 fi
 
-if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
+if [[ -z "$OPT_SPHENIX" && -d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core ]]
 then
-  export OPT_SPHENIX=/opt/sphenix/core
+  export OPT_SPHENIX=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core
 fi
 
-if [[ -z "$OPT_UTILS" && -d /opt/sphenix/utils ]]
+if [[ -z "$OPT_UTILS" && -d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils ]]
 then
-    export OPT_UTILS=/opt/sphenix/utils
+    export OPT_UTILS=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils
 fi
+
+
 
 # set site wide compiler options (no rpath hardcoding)
 if [[ -z "$CONFIG_SITE" ]]
@@ -154,11 +156,11 @@ fi
 
 if [ -z "$OFFLINE_MAIN" ]
 then
-  if [ ! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v ]
+  if [ ! -d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v ]
   then
     opt_v="new"
   fi
-  export OFFLINE_MAIN=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
+  export OFFLINE_MAIN=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v
 fi
 
 if [[ $OFFLINE_MAIN = *insure* ]]
@@ -415,3 +417,9 @@ export PATH
 export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
+
+# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
+if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
+then
+  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
+fi
