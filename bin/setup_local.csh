@@ -1,6 +1,11 @@
 #! /bin/csh -f -x
+if (! $?OPT_SPHENIX) then
+  echo OPT_SPHENIX environment variable not set, source the sphenix_setup script
+  echo before sourcing this script
+  exit 1
+endif
 if ($#argv > 0) then
-  source /opt/sphenix/core/bin/setup_root6_include_path.csh $*
+  source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $*
   set ldpath = ""
   set bpath = ""
   set first=1
