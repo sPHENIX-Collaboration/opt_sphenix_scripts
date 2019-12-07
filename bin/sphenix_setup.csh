@@ -407,3 +407,9 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
 source $OPT_SPHENIX/bin/setup_root6_include_path.csh $OFFLINE_MAIN
+
+# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
+
+if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
