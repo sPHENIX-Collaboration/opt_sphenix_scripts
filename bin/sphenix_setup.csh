@@ -49,8 +49,9 @@ foreach arg ($*)
         set opt_b =  $arg
 	breaksw
     case "-*":
-        echo "usage source sphenix_setup.csh [-a] [-n] [-h] [version]"
+        echo "usage source sphenix_setup.csh [-a] [-b[base dir]] [-n] [-h] [version]"
         echo "-a: append path and LD_LIBRARY_PATH to existing ones"
+        echo "-b: override base directory for installation (default script dir), no space between -b and directory"
         echo "-n: overwrite all environment variables, needed for switching builds"
         echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
         exit(0)
