@@ -22,6 +22,13 @@ ulimit -c 0
 opt_a=0
 opt_n=0
 opt_v="new"
+opt_b="none"
+
+this_script=$BASH_SOURCE
+#
+# Absolute path to this script, everything is relative to this path
+#
+this_script=`readlink -f $this_script`
 
 for arg in "$@"
 do
@@ -32,9 +39,13 @@ do
     -n)
         opt_n=1
 	;;
+    -b*)
+        opt_b=$arg
+        ;;
     -*)
-        echo "usage source sphenix_setup.csh [-a] [-n] [-h] [version]"
+        echo "usage source sphenix_setup.csh [-a] [-b[base dir]] [-n] [-h] [version]"
         echo "-a: append path and LD_LIBRARY_PATH to existing ones"
+        echo "-b: override base directory for installation (default script dir), no space between -b and directory"
         echo "-n: overwrite all environment variables, needed for switching builds"
         echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
         exit 0
@@ -44,6 +55,8 @@ do
 	;;
     esac
 done
+# strip the -b from the base installation area
+force_base=`echo $opt_b | awk '{print substr($0,3)}'`
 
 
 # if -n unset all relevant environment variables
@@ -106,14 +119,31 @@ else
     unset ORIG_MANPATH
 fi
 
-if [[ -z "$OPT_SPHENIX" && -d /opt/sphenix/core ]]
+# Absolute path of this script
+scriptpath=`dirname "$this_script"`
+# extract base path (everything before /opt/sphenix)
+optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
+optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
+
+
+# just in case the above screws up, give it the default in rcf
+if [ ! -d $optbasepath ]
 then
-  export OPT_SPHENIX=/opt/sphenix/core
+  optbasepath="/opt/sphenix"
+fi
+if [ -d $force_base ]
+then
+  optbasepath=$force_base
 fi
 
-if [[ -z "$OPT_UTILS" && -d /opt/sphenix/utils ]]
+if [[ -z "$OPT_SPHENIX" && -d ${optbasepath}/opt/sphenix/core ]]
 then
-    export OPT_UTILS=/opt/sphenix/utils
+  export OPT_SPHENIX=${optbasepath}/opt/sphenix/core
+fi
+
+if [[ -z "$OPT_UTILS" && -d ${optbasepath}/opt/sphenix/utils ]]
+then
+    export OPT_UTILS=${optbasepath}/opt/sphenix/utils
 fi
 
 # set site wide compiler options (no rpath hardcoding)
@@ -154,11 +184,11 @@ fi
 
 if [ -z "$OFFLINE_MAIN" ]
 then
-  if [ ! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v ]
+  if [ ! -d ${optbasepath}/release/$opt_v ]
   then
     opt_v="new"
   fi
-  export OFFLINE_MAIN=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
+  export OFFLINE_MAIN=${optbasepath}/release/$opt_v
 fi
 
 if [[ $OFFLINE_MAIN = *insure* ]]
