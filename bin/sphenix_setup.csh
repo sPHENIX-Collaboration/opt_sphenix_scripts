@@ -1,7 +1,7 @@
 #! /bin/csh -f -x
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-b[basedir]' and '-n'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
@@ -13,13 +13,17 @@
 # you need to be.  Specifying "pro.5" will point you to software in
 # /afs/rhic.bnl.gov/phenix/software/pro.5
 
-# Usage: source phenix_setup.csh [-a] [-n] [-h] [version]
+# Usage: source phenix_setup.csh [-a] [-b[basedir]] [-n] [-h] [version]
 
 # use "limit coredumpsize unlimited" to undo this.
 limit coredumpsize 0
 
 # find out if we are sourced or not, sadly the extraction of the
 # name and full path of this script depend on this
+# just for additional complications the cron job just passes /bin/tcsh
+# and so far I have not found a way to get to the location of this script
+# in a cron job. For cron jobs we need to set the 
+# -b[basedir]
 set sourced=($_)
 if ("$0" == "-tcsh") then
 set this_script=$sourced[2]
@@ -135,8 +139,11 @@ set optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
 set optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
 
 # just in case the above screws up, give it the default in rcf
-if (! -d $optbasepath) then
-  set optbasepath="/opt/sphenix"
+# empty string defaults to /opt/sphenix
+if ("$optbasepath" != "") then
+  if (! -d $optbasepath) then
+    set optbasepath=""
+  endif
 endif
 if (-d $force_base) then
   set optbasepath=$force_base
