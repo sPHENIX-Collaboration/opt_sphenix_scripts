@@ -1,11 +1,17 @@
 #! /bin/bash
+if [ -z "$OPT_SPHENIX" ]
+then
+  echo OPT_SPHENIX environment variable not set, source the sphenix_setup script
+  echo before sourcing this script
+  exit 1
+fi
 if [ $# > 0 ]
 then
   firsta=1
   firstb=1
   ldpath=""
   bpath=""
-  source /opt/sphenix/core/bin/setup_root6_include_path.sh $@
+  source ${OPT_SPHENIX}/bin/setup_root6_include_path.sh $@
   for arg in "$@"
   do
     libpath=$arg/lib
