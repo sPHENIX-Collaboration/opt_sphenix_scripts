@@ -19,6 +19,7 @@
 limit coredumpsize 0
 
 set opt_a = 0
+set opt_b = 0
 set opt_n = 0
 set opt_v = "new"
 
@@ -26,6 +27,9 @@ foreach arg ($*)
     switch ($arg)
     case "-a":
 	set opt_a = 1
+	breaksw
+    case "-b*":
+	set opt_b = 1
 	breaksw
     case "-n":
         set opt_n = 1
