@@ -1,7 +1,7 @@
 #! /bin/csh -f -x
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-b[basedir]' and '-n'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
@@ -13,14 +13,33 @@
 # you need to be.  Specifying "pro.5" will point you to software in
 # /afs/rhic.bnl.gov/phenix/software/pro.5
 
-# Usage: source phenix_setup.csh [-a] [-n] [-h] [version]
+# Usage: source phenix_setup.csh [-a] [-b[basedir]] [-n] [-h] [version]
 
 # use "limit coredumpsize unlimited" to undo this.
 limit coredumpsize 0
 
+# find out if we are sourced or not, sadly the extraction of the
+# name and full path of this script depend on this
+# just for additional complications the cron job just passes /bin/tcsh
+# and so far I have not found a way to get to the location of this script
+# in a cron job. For cron jobs we need to set the 
+# -b[basedir]
+set sourced=($_)
+if ("$0" == "-tcsh") then
+set this_script=$sourced[2]
+else
+set this_script="$0"
+endif
+
+#
+# Absolute path to this script, everything is relative to this path
+#
+set this_script=`readlink -f $this_script`
+
 set opt_a = 0
 set opt_n = 0
 set opt_v = "new"
+set opt_b = "none"
 
 foreach arg ($*)
     switch ($arg)
@@ -30,9 +49,13 @@ foreach arg ($*)
     case "-n":
         set opt_n = 1
 	breaksw
+    case "-b*":
+        set opt_b =  $arg
+	breaksw
     case "-*":
-        echo "usage source sphenix_setup.csh [-a] [-n] [-h] [version]"
+        echo "usage source sphenix_setup.csh [-a] [-b[base dir]] [-n] [-h] [version]"
         echo "-a: append path and LD_LIBRARY_PATH to existing ones"
+        echo "-b: override base directory for installation (default script dir), no space between -b and directory"
         echo "-n: overwrite all environment variables, needed for switching builds"
         echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
         exit(0)
@@ -42,6 +65,8 @@ foreach arg ($*)
 	breaksw
     endsw
 end
+# strip the -b from the base installation area
+set force_base=`echo $opt_b | awk '{print substr($0,3)}'`
 
 # STARs environment contains an alias for pwd which
 # throws a monkey wrench into pwd -P
@@ -74,6 +99,8 @@ if ($opt_n) then
   unsetenv XERCESCROOT
 endif
 
+# we do not use afs anymore, I leave this in place in case
+# we need to use it in the future
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
 set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
@@ -91,7 +118,7 @@ setenv DCACHE_RAHEAD
 setenv DCACHE_RA_BUFFER 2097152
 
 
-# Make copies of PATH and LD_LIBRARY_PATH as they were
+# Make copies of PATH, LD_LIBRARY_PATH and MANPATH as they were
 setenv ORIG_PATH ${PATH}
 if ($?LD_LIBRARY_PATH) then
     setenv ORIG_LD_LIBRARY_PATH ${LD_LIBRARY_PATH}
@@ -105,16 +132,29 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-if (! $?OPT_SPHENIX) then
-  if (-d /opt/sphenix/core) then
-    setenv OPT_SPHENIX /opt/sphenix/core
+# Absolute path of this script
+set scriptpath=`dirname "$this_script"`
+# extract base path (everything before /opt/sphenix)
+set optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
+set optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
+
+# just in case the above screws up, give it the default in rcf
+# empty string defaults to /opt/sphenix
+if ("$optbasepath" != "") then
+  if (! -d $optbasepath) then
+    set optbasepath=""
   endif
+endif
+if (-d $force_base) then
+  set optbasepath=$force_base
+endif
+
+if (! $?OPT_SPHENIX) then
+  setenv OPT_SPHENIX ${optbasepath}/opt/sphenix/core
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /opt/sphenix/utils) then
-    setenv OPT_UTILS /opt/sphenix/utils
-  endif
+  setenv OPT_UTILS ${optbasepath}/opt/sphenix/utils
 endif
 
 # set site wide compiler options (no rpath hardcoding)
@@ -149,10 +189,10 @@ endif
 
 # OFFLINE
 if (! $?OFFLINE_MAIN) then
-  if (! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v) then
+  if (! -d ${optbasepath}/release/$opt_v) then
     set opt_v = "new"
   endif
-  setenv OFFLINE_MAIN /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
+  setenv OFFLINE_MAIN ${optbasepath}/release/$opt_v
 endif
 
 if ($OFFLINE_MAIN =~ *"insure"* ) then
@@ -230,7 +270,7 @@ if (! $?G4_MAIN) then
 endif
 
 if (-d $G4_MAIN) then
-# normalize G4_MAIN to /opt/phenix/geant4.Version
+# normalize G4_MAIN to ${optbasepath}/opt/sphenix/core/geant4.Version
     set here=`pwd`
     cd $G4_MAIN
     set there=`pwd -P`
@@ -258,7 +298,6 @@ endif
 if (! $?XERCESCROOT) then
   setenv XERCESCROOT $G4_MAIN
 endif
-
 
 #Pythia8
 if (! $?PYTHIA8) then
@@ -292,19 +331,19 @@ if (! $?PGHOST) then
 endif
 
 # set initial paths, all following get prepended
-set path = (/usr/lib64/qt-3.3/bin /usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
+set path = (/usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
 set manpath = `/usr/bin/man --path`
 
 set ldpath = /usr/local/lib64:/usr/lib64
 
 # loop over all bin dirs and prepend to path
-foreach bindir ($COVERITY_ROOT/bin \
+foreach bindir (${COVERITY_ROOT}/bin \
                 ${PARASOFT}/bin \
-                $G4_MAIN/bin \
+                ${G4_MAIN}/bin \
                 $rootbindir \
-                $OPT_SPHENIX/bin \
-                $OPT_UTILS/bin \
-                $ONLINE_MAIN/bin \
+                ${OPT_SPHENIX}/bin \
+                ${OPT_UTILS}/bin \
+                ${ONLINE_MAIN}/bin \
                 ${OFFLINE_MAIN}/bin)
   if (-d $bindir) then
     set path = ($bindir $path)
@@ -316,8 +355,8 @@ foreach libdir (${PARASOFT}/lib \
                 ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
                 ${G4_MAIN}/lib64 \
                 ${rootlibdir} \
-                $OPT_SPHENIX/lib \
-                $OPT_UTILS/lib \
+                ${OPT_SPHENIX}/lib \
+                ${OPT_UTILS}/lib \
                 ${ONLINE_MAIN}/lib \
                 ${OFFLINE_MAIN}/lib)
   if (-d $libdir) then
@@ -330,7 +369,7 @@ foreach mandir (${ROOTSYS}/man \
                 ${OPT_SPHENIX}/share/man \
                 ${OPT_UTILS}/man \
                 ${OPT_UTILS}/share/man \
-                $OFFLINE_MAIN/share/man)
+                ${OFFLINE_MAIN}/share/man)
   if (-d $mandir) then
     set manpath = ${mandir}:${manpath}
   endif
@@ -375,3 +414,9 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
 source $OPT_SPHENIX/bin/setup_root6_include_path.csh $OFFLINE_MAIN
+
+# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
+
+if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
