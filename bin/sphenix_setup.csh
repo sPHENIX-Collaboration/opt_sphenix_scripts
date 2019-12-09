@@ -110,14 +110,14 @@ else
 endif
 
 if (! $?OPT_SPHENIX) then
-  if (-d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core) then
-    setenv OPT_SPHENIX /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core
+  if (-d /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/opt/sphenix/core) then
+    setenv OPT_SPHENIX /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/opt/sphenix/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils) then
-    setenv OPT_UTILS /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils
+  if (-d /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/opt/sphenix/utils) then
+    setenv OPT_UTILS /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/opt/sphenix/utils
   endif
 endif
 
@@ -154,10 +154,10 @@ endif
 
 # OFFLINE
 if (! $?OFFLINE_MAIN) then
-  if (! -d /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v) then
+  if (! -d /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/release/$opt_v) then
     set opt_v = "new"
   endif
-  setenv OFFLINE_MAIN /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/$opt_v
+  setenv OFFLINE_MAIN /cvmfs/sphenix.opensciencegrid.org/gcc-8.3/release/$opt_v
 endif
 
 if ($OFFLINE_MAIN =~ *"insure"* ) then
