@@ -110,14 +110,14 @@ else
 endif
 
 if (! $?OPT_SPHENIX) then
-  if (-d  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/core) then
-    setenv OPT_SPHENIX  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/core
+  if (-d  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/opt/sphenix/core) then
+    setenv OPT_SPHENIX  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/opt/sphenix/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/utils) then
-    setenv OPT_UTILS  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/utils
+  if (-d  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/opt/sphenix/utils) then
+    setenv OPT_UTILS  /cvmfs/sphenix.opensciencegrid.org/x8664_sl7/opt/sphenix/utils
   endif
 endif
 
