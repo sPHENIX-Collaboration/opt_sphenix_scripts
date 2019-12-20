@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# tell our perl scripts which adjust the opt areas
+# according to the cvmfs volume name 
+# to leave this alone: DO_NOT_CHANGE_OPT_SPHENIX
+
 # A general purpose login script for sPHENIX.  The allowed arguments
 # are '-a' and '-n'
 # -a indicates that the script should append to the PATH
