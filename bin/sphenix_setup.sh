@@ -30,6 +30,8 @@ this_script=$BASH_SOURCE
 #
 this_script=`readlink -f $this_script`
 
+unset force_base
+
 for arg in "$@"
 do
     case "$arg" in
@@ -41,6 +43,8 @@ do
 	;;
     -b*)
         opt_b=$arg
+        # strip the -b from the base installation area
+        force_base=`echo $opt_b | awk '{print substr($0,3)}'`
         ;;
     -*)
         echo "usage source sphenix_setup.csh [-a] [-b[base dir]] [-n] [-h] [version]"
@@ -55,9 +59,6 @@ do
 	;;
     esac
 done
-# strip the -b from the base installation area
-force_base=`echo $opt_b | awk '{print substr($0,3)}'`
-
 
 # if -n unset all relevant environment variables
 # also from phenix setup script so we can switch
@@ -131,7 +132,7 @@ if [ ! -d $optbasepath ]
 then
   optbasepath="/opt/sphenix"
 fi
-if [ -d $force_base ]
+if [[ -z "$force_base" && -d $force_base ]]
 then
   optbasepath=$force_base
 fi
