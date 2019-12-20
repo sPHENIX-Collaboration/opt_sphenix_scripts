@@ -110,14 +110,14 @@ else
 endif
 
 if (! $?OPT_SPHENIX) then
-  if (-d /opt/sphenix/core) then
-    setenv OPT_SPHENIX /opt/sphenix/core
+  if (-d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core) then
+    setenv OPT_SPHENIX /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /opt/sphenix/utils) then
-    setenv OPT_UTILS /opt/sphenix/utils
+  if (-d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils) then
+    setenv OPT_UTILS /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils
   endif
 endif
 
@@ -364,6 +364,7 @@ else
 endif
 
 #replace @sys by afs sysname (to strip duplicate entries with /@sys/ and /x86_64_sl7/)
+# this does not change anything in cvmfs, just in case we need to go to afs
 setenv PATH  `echo $PATH | sed "s/@sys/$sysname/g"`
 setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | sed "s/@sys/$sysname/g"`
 setenv MANPATH  `echo $MANPATH | sed "s/@sys/$sysname/g"`
@@ -378,4 +379,9 @@ setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
-source $OPT_SPHENIX/bin/setup_root6_include_path.csh $OFFLINE_MAIN
+source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
+
+# set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
+if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
