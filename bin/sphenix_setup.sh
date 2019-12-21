@@ -64,6 +64,14 @@ do
     esac
 done
 
+# unset compiler settings from gcc 8.3 they will be set again
+# in the respective gcc 8.3 setup, but they wreak havoc if you
+# leave them when using another compiler
+unset FC
+unset CC
+unset CXX
+unset COMPILER_PATH
+
 # if -n unset all relevant environment variables
 # also from phenix setup script so we can switch
 if [ $opt_n != 0 ]
