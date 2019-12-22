@@ -358,8 +358,10 @@ then
   export PG_PHENIX_DBNAME=Phenix_phnxdbrcf2_C
 fi
 
-path=(/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
-manpath=`/usr/bin/man --path`
+path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+# we need to use the new PATH here, otherwise when switching between
+# cvmfs volumes the PATH from the last one creeps in here
+manpath=`env PATH=$path /usr/bin/man --path`
 
 ldpath=/usr/local/lib64:/usr/lib64
 
