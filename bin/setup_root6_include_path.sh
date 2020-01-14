@@ -5,7 +5,7 @@ first=1
 offline_main_done=0
 # make sure our include dirs come first in ROOT_INCLUDE_PATH
 # use OFFLINE_MAIN only if it comes in the list of arguments, flag it as used
-if [ $# > 0 ]
+if [ $# -gt 0 ]
 then
   for arg in "$@"
   do
