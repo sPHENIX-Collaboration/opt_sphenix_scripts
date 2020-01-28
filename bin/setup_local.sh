@@ -5,7 +5,7 @@ then
   echo before sourcing this script
   exit 1
 fi
-if [ $# > 0 ]
+if [ $# -gt 0 ]
 then
   firsta=1
   firstb=1
