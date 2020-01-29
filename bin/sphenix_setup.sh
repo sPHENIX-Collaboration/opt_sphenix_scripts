@@ -100,8 +100,12 @@ fi
 
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
-sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
-
+if [[ -f /usr/bin/fs ]]
+then
+  sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
+else
+  sysname=x8664_sl7
+fi
 # turn off opengl direct rendering bc problems for nx
 # that problem seems to have been fixed, leave this in here since it
 # took a long time to figure this one out
