@@ -85,11 +85,13 @@ if ($opt_n) then
   unsetenv TSEARCHPATH
   unsetenv XERCESCROOT
 endif
-
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
-set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
-
+if (-f /usr/bin/fs) then
+  set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
+else
+  set sysname=x8664_sl7
+endif
 # turn off opengl direct rendering bc problems for nx
 # that problem seems to have been fixed, leave this in here since it
 # took a long time to figure this one out
