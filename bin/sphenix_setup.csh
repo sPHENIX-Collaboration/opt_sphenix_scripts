@@ -306,19 +306,19 @@ if (! $?PGHOST) then
 endif
 
 # set initial paths, all following get prepended
-set path = (/usr/lib64/qt-3.3/bin /usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
+set path = (/usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
 set manpath = `/usr/bin/man --path`
 
 set ldpath = /usr/local/lib64:/usr/lib64
 
 # loop over all bin dirs and prepend to path
-foreach bindir ($COVERITY_ROOT/bin \
+foreach bindir (${COVERITY_ROOT}/bin \
                 ${PARASOFT}/bin \
-                $G4_MAIN/bin \
-                $rootbindir \
-                $OPT_SPHENIX/bin \
-                $OPT_UTILS/bin \
-                $ONLINE_MAIN/bin \
+                ${G4_MAIN}/bin \
+                ${rootbindir} \
+                ${OPT_SPHENIX}/bin \
+                ${OPT_UTILS}/bin \
+                ${ONLINE_MAIN}/bin \
                 ${OFFLINE_MAIN}/bin)
   if (-d $bindir) then
     set path = ($bindir $path)
@@ -330,10 +330,14 @@ foreach libdir (${PARASOFT}/lib \
                 ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
                 ${G4_MAIN}/lib64 \
                 ${rootlibdir} \
-                $OPT_SPHENIX/lib \
-                $OPT_UTILS/lib \
+                ${OPT_SPHENIX}/lib \
+                ${OPT_SPHENIX}/lib64 \
+                ${OPT_UTILS}/lib \
+                ${OPT_UTILS}/lib64 \
                 ${ONLINE_MAIN}/lib \
-                ${OFFLINE_MAIN}/lib)
+                ${ONLINE_MAIN}/lib64 \
+                ${OFFLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib64)
   if (-d $libdir) then
     set ldpath = ${libdir}:${ldpath}
   endif
@@ -344,7 +348,7 @@ foreach mandir (${ROOTSYS}/man \
                 ${OPT_SPHENIX}/share/man \
                 ${OPT_UTILS}/man \
                 ${OPT_UTILS}/share/man \
-                $OFFLINE_MAIN/share/man)
+                ${OFFLINE_MAIN}/share/man)
   if (-d $mandir) then
     set manpath = ${mandir}:${manpath}
   endif
