@@ -170,7 +170,7 @@ then
   then
     export CONFIG_SITE=${OPT_SPHENIX}/etc/config_debug.site
   else
-    if [ -f ${OPT_SPHENIX}/etc/config_debug.site ]
+    if [ -f ${OPT_SPHENIX}/etc/config.site ]
     then
       export CONFIG_SITE=${OPT_SPHENIX}/etc/config.site
     fi
@@ -309,22 +309,9 @@ then
     then
       source ${G4_MAIN}/bin/geant4.sh
     fi
-
-    if [ -d ${G4_MAIN}/bin ]
-    then
-	path=${G4_MAIN}/bin:$path
-    fi
-    if [ -d ${G4_MAIN}/lib64 ] 
-    then
-	ldpath=${G4_MAIN}/lib64:$ldpath
-    fi
-fi
-if [[ -z "$XERCESCROOT" ]]
-then
-  export XERCESCROOT=${G4_MAIN}
 fi
 
-
+# Xerces is installed with G4 (G4 depends on it)
 if [[ -z "$XERCESCROOT" ]]
 then
   export XERCESCROOT=${G4_MAIN}
@@ -354,13 +341,13 @@ if [ -z "$COVERITY_ROOT" ]
 then
   export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2019.03
 fi
-
-if [ -z "$PGHOST" ]
-then
-  export PGHOST=phnxdbrcf2
-  export PGUSER=phnxrc
-  export PG_PHENIX_DBNAME=Phenix_phnxdbrcf2_C
-fi
+# comment out until we have a DB again
+#if [ -z "$PGHOST" ]
+#then
+#  export PGHOST=phnxdbrcf2
+#  export PGUSER=phnxrc
+#  export PG_PHENIX_DBNAME=Phenix_phnxdbrcf2_C
+#fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
 # we need to use the new PATH here, otherwise when switching between
@@ -370,13 +357,13 @@ manpath=`env PATH=$path /usr/bin/man --path`
 ldpath=/usr/local/lib64:/usr/lib64
 
 #loop over all bin dirs and prepend to path
-for bindir in $COVERITY_ROOT/bin \
+for bindir in ${COVERITY_ROOT}/bin \
               ${PARASOFT}/bin \
-              $G4_MAIN/bin \
-              $rootbindir \
-              $OPT_SPHENIX/bin \
-              $OPT_UTILS/bin \
-              $ONLINE_MAIN/bin \
+              ${G4_MAIN}/bin \
+              ${rootbindir} \
+              ${OPT_SPHENIX}/bin \
+              ${OPT_UTILS}/bin \
+              ${ONLINE_MAIN}/bin \
               ${OFFLINE_MAIN}/bin
 do
   if [ -d $bindir ]
@@ -388,12 +375,17 @@ done
 #loop over all lib dirs and prepend to ldpath
 for libdir in ${PARASOFT}/lib \
                 ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
+                ${G4_MAIN}/lib \
                 ${G4_MAIN}/lib64 \
                 ${rootlibdir} \
-                $OPT_SPHENIX/lib \
-                $OPT_UTILS/lib \
+                ${OPT_SPHENIX}/lib \
+                ${OPT_SPHENIX}/lib64 \
+                ${OPT_UTILS}/lib \
+                ${OPT_UTILS}/lib64 \
                 ${ONLINE_MAIN}/lib \
-                ${OFFLINE_MAIN}/lib
+                ${ONLINE_MAIN}/lib64 \
+                ${OFFLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib64
 do
   if [ -d $libdir ]
   then
