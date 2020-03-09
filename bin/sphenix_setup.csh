@@ -300,7 +300,7 @@ endif
 
 #database servers, not used right now
 if (! $?PGHOST) then
-  setenv PGHOST sphenixdbmaster
+  setenv PGHOST sphnxdbmaster
   setenv PGUSER phnxrc
 endif
 

@@ -345,7 +345,7 @@ fi
 # point to scratch DB
 if [ -z "$PGHOST" ]
 then
-  export PGHOST=sphenixdbmaster
+  export PGHOST=sphnxdbmaster
   export PGUSER=phnxrc
 fi
 
