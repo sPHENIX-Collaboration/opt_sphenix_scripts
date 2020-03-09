@@ -300,9 +300,8 @@ endif
 
 #database servers, not used right now
 if (! $?PGHOST) then
-  setenv PGHOST phnxdbrcf2
+  setenv PGHOST sphnxdbmaster
   setenv PGUSER phnxrc
-  setenv PG_PHENIX_DBNAME Phenix_phnxdbrcf2_C
 endif
 
 # set initial paths, all following get prepended

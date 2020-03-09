@@ -341,13 +341,13 @@ if [ -z "$COVERITY_ROOT" ]
 then
   export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2019.03
 fi
-# comment out until we have a DB again
-#if [ -z "$PGHOST" ]
-#then
-#  export PGHOST=phnxdbrcf2
-#  export PGUSER=phnxrc
-#  export PG_PHENIX_DBNAME=Phenix_phnxdbrcf2_C
-#fi
+
+# point to scratch DB
+if [ -z "$PGHOST" ]
+then
+  export PGHOST=sphnxdbmaster
+  export PGUSER=phnxrc
+fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
 # we need to use the new PATH here, otherwise when switching between
