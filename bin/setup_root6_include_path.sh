@@ -21,12 +21,12 @@ then
         then
           if [ $first == 1 ]
           then
-            root_include_path=$incdir
+            ROOT_INCLUDE_PATH=$incdir
             first=0
           else
             if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* && $incdir != *"rave"* ]]
             then
-              root_include_path=$root_include_path:$incdir
+              ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$incdir
             fi
           fi
         fi
@@ -38,9 +38,9 @@ if [ $offline_main_done == 0 ]
 then
   if [ $first == 1 ]
   then
-    root_include_path=$OFFLINE_MAIN/include
+    ROOT_INCLUDE_PATH=$OFFLINE_MAIN/include
   else
-    root_include_path=$root_include_path:$OFFLINE_MAIN/include
+    ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$OFFLINE_MAIN/include
   fi
   for incdir in `find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`
   do
@@ -48,12 +48,16 @@ then
     then
       if [[ $incdir != *"CGAL"* && $incdir != *"Vc"* && $incdir != *"rave"* ]]
       then
-        root_include_path=$root_include_path:$incdir
+        ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$incdir
       fi
     fi
   done
 fi
-root_include_path=$root_include_path:$G4_MAIN/include
+ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
 # add G4 include path
-export ROOT_INCLUDE_PATH=$root_include_path
+export ROOT_INCLUDE_PATH
+#unset locally used variables
+unset first
+unset offline_main_done
+unset incdir
 #echo $ROOT_INCLUDE_PATH
