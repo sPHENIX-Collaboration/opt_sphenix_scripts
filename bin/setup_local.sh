@@ -7,38 +7,45 @@ then
 fi
 if [ $# -gt 0 ]
 then
-  firsta=1
-  firstb=1
-  ldpath=""
-  bpath=""
+  local_firsta=1
+  local_firstb=1
+  local_ldpath=""
+  local_bpath=""
   source ${OPT_SPHENIX}/bin/setup_root6_include_path.sh $@
   for arg in "$@"
   do
-    libpath=$arg/lib
-    binpath=$arg/bin
-    if [ -d $libpath ]
+    local_libpath=$arg/lib
+    local_binpath=$arg/bin
+    if [ -d $local_libpath ]
     then
-      if [ $firsta == 1 ]
+      if [ $local_firsta == 1 ]
       then
-        ldpath=$libpath
-        firsta=0
+        local_ldpath=$local_libpath
+        local_firsta=0
       else
-        ldpath=${ldpath}:${libpath}
+        local_ldpath=${local_ldpath}:${local_libpath}
       fi
     fi
-    if [ -d $binpath ]
+    if [ -d $local_binpath ]
     then
-      if [ $firstb == 1 ]
+      if [ $local_firstb == 1 ]
       then
-        bpath=$binpath
-        firstb=0
+        local_bpath=$local_binpath
+        local_firstb=0
       else
-        bpath=${bpath}:${binpath}
+        local_bpath=${local_bpath}:${local_binpath}
       fi
     fi
   done
-  export LD_LIBRARY_PATH=${ldpath}:$LD_LIBRARY_PATH
-  export PATH=${bpath}:${PATH}
+  export LD_LIBRARY_PATH=${local_ldpath}:$LD_LIBRARY_PATH
+  export PATH=${local_bpath}:${PATH}
   echo LD_LIBRARY_PATH now $LD_LIBRARY_PATH
   echo PATH now $PATH
+#unset locally used variables
+  unset local_binpath
+  unset local_bpath
+  unset local_firsta
+  unset local_firstb
+  unset local_ldpath
+  unset local_libpath
 fi
