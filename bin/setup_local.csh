@@ -6,26 +6,33 @@ if (! $?OPT_SPHENIX) then
 endif
 if ($#argv > 0) then
   source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $*
-  set ldpath = ""
-  set bpath = ""
-  set first=1
+  set local_ldpath = ""
+  set local_bpath = ""
+  set local_first=1
   foreach arg ($*)
-    set libpath = $arg/lib
-    set binpath = $arg/bin
-    if (-d $libpath) then
-      if ($first == 1) then
-        set ldpath = $libpath
-        set first=0
-      else
-        set ldpath =  ${ldpath}:${libpath}
+    foreach local_libpath ( $arg/lib $arg/lib64)
+      if (-d $local_libpath) then
+        if ($local_first == 1) then
+          set local_ldpath = $local_libpath
+          set local_first=0
+        else
+          set local_ldpath =  ${local_ldpath}:${local_libpath}
+        endif
       endif
-    endif
+    end
+    set binpath = $arg/bin
     if (-d $binpath) then
-      set bpath=($bpath $binpath)
+      set local_bpath=($local_bpath $binpath)
     endif
   end
-setenv LD_LIBRARY_PATH ${ldpath}:$LD_LIBRARY_PATH
-set path = ($bpath $path)
+  setenv LD_LIBRARY_PATH ${local_ldpath}:$LD_LIBRARY_PATH
+  set path = ($local_bpath $path)
+  echo LD_LIBRARY_PATH now $LD_LIBRARY_PATH
+  echo path now $path
+#unset locally used variables
+  unset local_binpath
+  unset local_bpath
+  unset local_first
+  unset local_ldpath
+  unset local_libpath
 endif  
-echo LD_LIBRARY_PATH now $LD_LIBRARY_PATH
-echo path now $path
