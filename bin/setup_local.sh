@@ -14,18 +14,20 @@ then
   source ${OPT_SPHENIX}/bin/setup_root6_include_path.sh $@
   for arg in "$@"
   do
-    local_libpath=$arg/lib
-    local_binpath=$arg/bin
-    if [ -d $local_libpath ]
-    then
-      if [ $local_firsta == 1 ]
+    for local_libpath in $arg/lib $arg/lib64
+    do
+      if [ -d $local_libpath ]
       then
-        local_ldpath=$local_libpath
-        local_firsta=0
-      else
-        local_ldpath=${local_ldpath}:${local_libpath}
+        if [ $local_firsta == 1 ]
+        then
+          local_ldpath=$local_libpath
+          local_firsta=0
+        else
+          local_ldpath=${local_ldpath}:${local_libpath}
+        fi
       fi
-    fi
+    done
+    local_binpath=$arg/bin
     if [ -d $local_binpath ]
     then
       if [ $local_firstb == 1 ]
