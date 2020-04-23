@@ -118,16 +118,22 @@ if ($?MANPATH) then
 else
     unsetenv ORIG_MANPATH
 endif
-
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7
 if (! $?OPT_SPHENIX) then
-  if (-d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core) then
-    setenv OPT_SPHENIX /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core
+  if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
+    setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/sphenix/core
+  endif
+  if (-d ${local_cvmfsvolume}/opt/fun4all/core) then
+    setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/fun4all/core
   endif
 endif
 
 if (! $?OPT_UTILS) then
-  if (-d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils) then
-    setenv OPT_UTILS /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/utils
+  if (-d ${local_cvmfsvolume}/opt/sphenix/utils) then
+    setenv OPT_UTILS ${local_cvmfsvolume}/opt/sphenix/utils
+  endif
+  if (-d ${local_cvmfsvolume}/opt/fun4all/utils) then
+    setenv OPT_UTILS ${local_cvmfsvolume}/opt/fun4all/utils
   endif
 endif
 
@@ -163,10 +169,10 @@ endif
 
 # OFFLINE
 if (! $?OFFLINE_MAIN) then
-  if (! -d /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v) then
+  if (! -d ${local_cvmfsvolume}/release/$opt_v) then
     set opt_v = "new"
   endif
-  setenv OFFLINE_MAIN /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/release/$opt_v
+  setenv OFFLINE_MAIN ${local_cvmfsvolume}/release/$opt_v
 endif
 
 if ($OFFLINE_MAIN =~ *"insure"* ) then
@@ -398,3 +404,6 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
 endif
+
+#unset local variables
+unset local_cvmfsvolume
