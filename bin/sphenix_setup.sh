@@ -138,10 +138,15 @@ fi
 
 # Absolute path of this script
 scriptpath=`dirname "$this_script"`
-# extract base path (everything before /opt/sphenix)
-optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
-optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
+# extract base path (everything before /opt/sphenix or /opt/fun4all)
+if [[ $scriptpath == *"/opt/sphenix"* ]]
+then
+  optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
+else
+  optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/fun4all")}'`
+fi
 
+optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
 
 # just in case the above screws up, give it the default in rcf
 if [ ! -d $optbasepath ]
@@ -153,14 +158,28 @@ then
   optbasepath=$force_base
 fi
 
-if [[ -z "$OPT_SPHENIX" && -d ${optbasepath}/opt/sphenix/core ]]
+if [[ -z "$OPT_SPHENIX" ]]
 then
-  export OPT_SPHENIX=${optbasepath}/opt/sphenix/core
+  if [[ -d ${optbasepath}/opt/sphenix/core ]]
+  then
+    export OPT_SPHENIX=${optbasepath}/opt/sphenix/core
+  fi
+  if [[ -d ${optbasepath}/opt/fun4all/core ]]
+  then
+    export OPT_SPHENIX=${optbasepath}/opt/fun4all/core
+  fi
 fi
 
-if [[ -z "$OPT_UTILS" && -d ${optbasepath}/opt/sphenix/utils ]]
+if [[ -z "$OPT_UTILS" ]]
 then
+  if [[ -d ${optbasepath}/opt/sphenix/utils ]]
+  then
     export OPT_UTILS=${optbasepath}/opt/sphenix/utils
+  fi
+  if [[ -d ${optbasepath}/opt/fun4all/utils ]]
+  then
+    export OPT_UTILS=${optbasepath}/opt/fun4all/utils
+  fi
 fi
 
 # set site wide compiler options (no rpath hardcoding)
