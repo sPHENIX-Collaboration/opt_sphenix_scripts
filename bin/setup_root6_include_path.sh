@@ -55,8 +55,13 @@ then
     fi
   done
 fi
-ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
 # add G4 include path
+ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
+# add ROOT Macros
+if [ -d $OFFLINE_MAIN/rootmacros ]
+then
+  ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$OFFLINE_MAIN/rootmacros
+fi
 export ROOT_INCLUDE_PATH
 #unset locally used variables
 unset local_first
