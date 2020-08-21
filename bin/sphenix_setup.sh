@@ -170,6 +170,11 @@ then
   fi
 fi
 
+if [[ -z "$OPT_FUN4ALL" ]]
+then
+  export OPT_FUN4ALL=$OPT_SPHENIX
+fi
+
 if [[ -z "$OPT_UTILS" ]]
 then
   if [[ -d ${optbasepath}/opt/sphenix/utils ]]
