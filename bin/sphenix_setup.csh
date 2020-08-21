@@ -119,6 +119,7 @@ else
     unsetenv ORIG_MANPATH
 endif
 set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7
+
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
     setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/sphenix/core
@@ -126,6 +127,11 @@ if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/fun4all/core) then
     setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/fun4all/core
   endif
+endif
+
+#for the eic - set OPT_FUN4ALL to OPT_SPHENIX
+if (! $?OPT_FUN4ALL) then
+  setenv OPT_FUN4ALL $OPT_SPHENIX
 endif
 
 if (! $?OPT_UTILS) then
