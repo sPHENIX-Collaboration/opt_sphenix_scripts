@@ -64,9 +64,8 @@ do
     esac
 done
 
-# unset compiler settings from gcc 8.3 they will be set again
-# in the respective gcc 8.3 setup, but they wreak havoc if you
-# leave them when using another compiler
+# unset compiler settings from gcc 8.3 in case they were set
+# they wreak havoc if you leave them when using another compiler
 unset FC
 unset CC
 unset CXX
@@ -89,6 +88,7 @@ if [ $opt_n != 0 ]
   unset PARASOFT
   unset PERL5LIB
   unset PGHOST
+  unset PG_PHENIX_DBNAME
   unset PYTHIA8
   unset PYTHONPATH
   unset ROOTSYS
