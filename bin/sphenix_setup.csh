@@ -51,9 +51,8 @@ end
 # throws a monkey wrench into pwd -P
 unalias pwd
 
-# unset compiler settings from gcc 8.3 they will be set again
-# in the respective gcc 8.3 setup, but they wreak havoc if you
-# leave them when using another compiler
+# unset compiler settings from gcc 8.3 in case they were set
+# they wreak havoc if you leave them when using another compiler
 unsetenv FC
 unsetenv CC
 unsetenv CXX
@@ -77,6 +76,7 @@ if ($opt_n) then
   unsetenv PARASOFT
   unsetenv PERL5LIB
   unsetenv PGHOST
+  unsetenv PG_PHENIX_DBNAME
   unsetenv PYTHIA8
   unsetenv PYTHONPATH
   unsetenv ROOTSYS
