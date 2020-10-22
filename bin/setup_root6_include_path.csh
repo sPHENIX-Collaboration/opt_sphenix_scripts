@@ -1,7 +1,8 @@
 #! /bin/csh -f -x
 unsetenv ROOT_INCLUDE_PATH
 setenv EVT_LIB $ROOTSYS/lib
-set local_first=1
+# start with your local directory
+setenv ROOT_INCLUDE_PATH ./
 set local_offline_main_done=0
 # make sure our include dirs come first in ROOT_INCLUDE_PATH, 
 # use OFFLINE_MAIN only if it comes in the list of arguments, flag it as used
@@ -13,13 +14,8 @@ if ($#argv > 0) then
     if (-d $arg) then
       foreach local_incdir (`find $arg/include -maxdepth 1 -type d -print`)
         if (-d $local_incdir) then
-          if ($local_first == 1) then
-            setenv ROOT_INCLUDE_PATH $local_incdir
-            set local_first=0
-          else
-            if ($local_incdir !~ {*CGAL} && $local_incdir !~ {*Vc} && $local_incdir !~ {*rave}) then
-              setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$local_incdir
-            endif
+          if ($local_incdir !~ {*CGAL} && $local_incdir !~ {*Vc} && $local_incdir !~ {*rave}) then
+            setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$local_incdir
           endif
         endif
       end
@@ -28,11 +24,7 @@ if ($#argv > 0) then
 endif  
 # add OFFLINE_MAIN include paths by default if not already done
 if ($local_offline_main_done == 0) then
-  if ($local_first == 1) then
-    setenv ROOT_INCLUDE_PATH $OFFLINE_MAIN/include
-  else
     setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/include
-  endif
   foreach local_incdir (`find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`)
     if (-d $local_incdir) then
       if ($local_incdir !~ {*CGAL} && $local_incdir !~ {*Vc} && $local_incdir !~ {*rave}) then
@@ -48,6 +40,5 @@ if (-d $OFFLINE_MAIN/rootmacros) then
   setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/rootmacros
 endif
 #echo $ROOT_INCLUDE_PATH
-unset local_first
 unset local_incdir
 unset local_offline_main_done
