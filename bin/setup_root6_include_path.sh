@@ -21,11 +21,11 @@ then
       do
         if [ -d $local_incdir ]
         then
-            if [[ $local_incdir != *"CGAL"* && $local_incdir != *"Vc"* && $local_incdir != *"rave"* ]]
-            then
-              ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$local_incdir
-            fi
+          if [[ $local_incdir != *"CGAL"* && $local_incdir != *"Vc"* && $local_incdir != *"rave"* ]]
+          then
+            ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$local_incdir
           fi
+        fi
       done
     fi
   done
