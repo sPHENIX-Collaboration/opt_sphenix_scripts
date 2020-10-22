@@ -118,6 +118,7 @@ if ($?MANPATH) then
 else
     unsetenv ORIG_MANPATH
 endif
+
 set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3
 
 if (! $?OPT_SPHENIX) then
