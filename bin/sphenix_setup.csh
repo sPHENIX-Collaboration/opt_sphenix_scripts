@@ -410,12 +410,6 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 # set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
 if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
-# unset these variables which we do not want
-# (they interfere with e.g. ccache)
-  unsetenv FC
-  unsetenv CC
-  unsetenv CXX
-  unsetenv COMPILER_PATH
 endif
 
 #unset local variables
