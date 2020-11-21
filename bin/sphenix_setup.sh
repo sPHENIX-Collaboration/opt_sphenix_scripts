@@ -357,7 +357,7 @@ fi
 # Set up Insure++, if we have it
 if [ -z  "$PARASOFT" ] 
 then
-  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.3
+  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.5
 fi
 
 # Coverity
