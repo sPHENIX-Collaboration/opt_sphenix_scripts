@@ -80,6 +80,7 @@ if [ $opt_n != 0 ]
   unset CONFIG_SITE
   unset CVSROOT
   unset ${!G4*}
+  unset GSEARCHPATH
   unset LHAPATH
   unset ODBCINI
   unset OFFLINE_MAIN
@@ -371,6 +372,12 @@ if [ -z "$PGHOST" ]
 then
   export PGHOST=sphnxdbmaster
   export PGUSER=phnxrc
+fi
+
+# File catalog search path
+if [ -z "$GSEARCHPATH" ]
+then
+  export GSEARCHPATH=.:PG:DCACHE
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
