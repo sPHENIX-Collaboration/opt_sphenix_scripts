@@ -67,6 +67,7 @@ if ($opt_n) then
   unsetenv COVERITY_ROOT
   unsetenv CVSROOT
   unsetenv G4*
+  unsetenv GSEARCHPATH
   unsetenv LHAPATH
   unsetenv MANPATH
   unsetenv ODBCINI
@@ -316,6 +317,13 @@ if (! $?PGHOST) then
   setenv PGHOST sphnxdbmaster
   setenv PGUSER phnxrc
 endif
+
+# File catalog search path
+if (! $?GSEARCHPATH) then
+    setenv GSEARCHPATH .:PG:DCACHE
+endif
+
+
 
 # set initial paths, all following get prepended
 set path = (/usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
