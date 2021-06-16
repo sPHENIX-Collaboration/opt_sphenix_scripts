@@ -418,13 +418,12 @@ if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
 endif
 
 # check if the s3 read only access is setup, otherwise add it
-if grep -q eicS3read "$HOME/.mcs3/config.json"; then
-  #endpoint already configured, do nothing. 
-  #Bash needs something here, otherwise throws an error
-  echo ""
+if ( { grep -q 'eicS3read' $HOME/.mcs3/config.json } ) then
+  #do nothing since already configured
 else
-   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read
-fi
+  #add the alias
+  mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read
+endif
 
 #unset local variables
 unset local_cvmfsvolume
