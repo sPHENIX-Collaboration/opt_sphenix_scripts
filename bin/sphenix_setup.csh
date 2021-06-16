@@ -323,8 +323,6 @@ if (! $?GSEARCHPATH) then
     setenv GSEARCHPATH .:PG:DCACHE
 endif
 
-
-
 # set initial paths, all following get prepended
 set path = (/usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
 set manpath = `/usr/bin/man --path`
@@ -418,6 +416,14 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 # set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
 if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
+
+# check if the s3 read only access is setup, otherwise add it
+if ( { grep -q 'eicS3read' $HOME/.mcs3/config.json } ) then
+  #do nothing since already configured
+else
+  #add the alias
+  mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read
 endif
 
 #unset local variables
