@@ -119,7 +119,8 @@ if ($?MANPATH) then
 else
     unsetenv ORIG_MANPATH
 endif
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7
+
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -303,7 +304,7 @@ endif
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.3
+  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.5
 endif
 
 # Coverity
