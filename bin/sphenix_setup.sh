@@ -489,8 +489,8 @@ export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
 # check if the s3 read only access is setup, otherwise add it
-if ! grep -q eicS3read "$HOME/.mcs3/config.json"; then
-   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read
+if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
+   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read &> /dev/null
 fi
 
 # setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
