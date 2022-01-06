@@ -1,21 +1,24 @@
 #! /bin/bash
 
 # tell our perl scripts which adjust the opt areas
-# according to the cvmfs volume name 
+# according to the cvmfs volume name
+# the next line is used by the cvmfs distributions scripts - NEVER CHANGE IT
 # to leave this alone: DO_NOT_CHANGE_OPT_SPHENIX
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-n' and '-h'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
 # use.  
-# -n forces the unset of all relevant variables so you can switch between
-# 32 bit and 64 bit setups
+# -n forces the unset of all relevant variables so you can switch from a
+# previously initialized setup (different build or PHENIX).
 # For instance, "new" (also the default value) will point you to
-# software in /afs/rhic.bnl.gov/phenix/software/new.  You can be specific if
-# you need to be.  Specifying "pro.5" will point you to software in
-# /afs/rhic.bnl.gov/phenix/software/pro.5
+# software in /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_new/new
+# You can be specific if you need to be:
+# Specifying "ana.230" will point you to software in
+# /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_ana/ana.230
+# -h just prints help (as does any other -<letter> flag)
 
 # Usage: source sphenix_setup.sh [-a] [-n] [-h] [version]
 

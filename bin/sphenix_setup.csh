@@ -1,17 +1,19 @@
 #! /bin/csh -f -x
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-n' and '-h'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
 # use.  
-# -n forces the unset of all relevant variables so you can switch between
-# 32 bit and 64 bit setups
+# -n forces the unset of all relevant variables so you can switch from a
+# previously initialized setup (different build or PHENIX).
 # For instance, "new" (also the default value) will point you to
-# software in /afs/rhic.bnl.gov/phenix/software/new.  You can be specific if
-# you need to be.  Specifying "pro.5" will point you to software in
-# /afs/rhic.bnl.gov/phenix/software/pro.5
+# software in /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_new/new
+# You can be specific if you need to be:
+# Specifying "ana.230" will point you to software in
+# /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_ana/ana.230
+# -h just prints help (as does any other -<letter> flag)
 
 # Usage: source phenix_setup.csh [-a] [-n] [-h] [version]
 
@@ -38,7 +40,7 @@ foreach arg ($*)
         echo "usage source sphenix_setup.csh [-a] [-n] [-h] [version]"
         echo "-a: append path and LD_LIBRARY_PATH to existing ones"
         echo "-n: overwrite all environment variables, needed for switching builds"
-        echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
+        echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.230)"
         exit(0)
 	breaksw
     case "*":
