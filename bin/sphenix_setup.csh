@@ -428,7 +428,5 @@ else
   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read >& /dev/null
 endif
 
-setenv MC_HOST_sphenixS3 https://sphnxpro:SepHcKzfNPhXZD7p@dcsphst004.rcf.bnl.gov:900
-
 #unset local variables
 unset local_cvmfsvolume
