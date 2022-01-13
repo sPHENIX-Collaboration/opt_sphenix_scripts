@@ -428,5 +428,10 @@ else
   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read >& /dev/null
 endif
 
+# source local setups
+if (-f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh) then
+  source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh
+endif
+
 #unset local variables
 unset local_cvmfsvolume
