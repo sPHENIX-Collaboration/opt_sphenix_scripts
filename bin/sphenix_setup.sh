@@ -367,7 +367,7 @@ fi
 # Coverity
 if [ -z "$COVERITY_ROOT" ]
 then
-  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2019.03
+  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2021.12
 fi
 
 # point to scratch DB
