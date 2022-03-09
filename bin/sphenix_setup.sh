@@ -380,7 +380,7 @@ fi
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
-  export GSEARCHPATH=.:PG:XROOTD:DCACHE:MINIO
+  export GSEARCHPATH=.:PG:XROOTD
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
