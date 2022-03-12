@@ -322,7 +322,7 @@ endif
 
 # File catalog search path
 if (! $?GSEARCHPATH) then
-    setenv GSEARCHPATH .:PG:MINIO
+    setenv GSEARCHPATH .:PG:XROOTD:MINIO
 endif
 
 # set initial paths, all following get prepended
