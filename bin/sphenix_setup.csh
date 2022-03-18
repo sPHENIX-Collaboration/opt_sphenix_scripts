@@ -1,17 +1,19 @@
 #! /bin/csh -f -x
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-n' and '-h'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
 # use.  
-# -n forces the unset of all relevant variables so you can switch between
-# 32 bit and 64 bit setups
+# -n forces the unset of all relevant variables so you can switch from a
+# previously initialized setup (different build or PHENIX).
 # For instance, "new" (also the default value) will point you to
-# software in /afs/rhic.bnl.gov/phenix/software/new.  You can be specific if
-# you need to be.  Specifying "pro.5" will point you to software in
-# /afs/rhic.bnl.gov/phenix/software/pro.5
+# software in /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_new/new
+# You can be specific if you need to be:
+# Specifying "ana.230" will point you to software in
+# /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_ana/ana.230
+# -h just prints help (as does any other -<letter> flag)
 
 # Usage: source phenix_setup.csh [-a] [-n] [-h] [version]
 
@@ -38,7 +40,7 @@ foreach arg ($*)
         echo "usage source sphenix_setup.csh [-a] [-n] [-h] [version]"
         echo "-a: append path and LD_LIBRARY_PATH to existing ones"
         echo "-n: overwrite all environment variables, needed for switching builds"
-        echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
+        echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.230)"
         exit(0)
 	breaksw
     case "*":
@@ -85,6 +87,7 @@ if ($opt_n) then
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
   unsetenv XERCESCROOT
+  unsetenv XPLOAD_DIR
 endif
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
@@ -119,7 +122,8 @@ if ($?MANPATH) then
 else
     unsetenv ORIG_MANPATH
 endif
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7
+
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -282,8 +286,8 @@ if (! $?XERCESCROOT) then
   setenv XERCESCROOT $G4_MAIN
 endif
 
-if (! $?XERCESCROOT) then
-  setenv XERCESCROOT $G4_MAIN
+if (! $?XPLOAD_DIR) then
+  setenv XPLOAD_DIR ${OPT_SPHENIX}/etc
 endif
 
 
@@ -303,12 +307,12 @@ endif
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.3
+  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.5
 endif
 
 # Coverity
 if (! $?COVERITY_ROOT) then
-  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-2019.03
+  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-2021.12
 endif
 
 #database servers, not used right now
@@ -319,7 +323,7 @@ endif
 
 # File catalog search path
 if (! $?GSEARCHPATH) then
-    setenv GSEARCHPATH .:PG:DCACHE
+    setenv GSEARCHPATH .:PG:XROOTD:MINIO
 endif
 
 # set initial paths, all following get prepended
@@ -415,6 +419,19 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 # set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
 if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
+
+# check if the s3 read only access is setup, otherwise add it
+if ( -d $HOME/.mcs3 && { grep -q 'eicS3read' $HOME/.mcs3/config.json } ) then
+  #do nothing since already configured
+else
+  #add the alias
+  mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read >& /dev/null
+endif
+
+# source local setups
+if (-f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh) then
+  source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh
 endif
 
 #unset local variables

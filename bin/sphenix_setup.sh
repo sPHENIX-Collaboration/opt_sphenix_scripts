@@ -1,21 +1,24 @@
 #! /bin/bash
 
 # tell our perl scripts which adjust the opt areas
-# according to the cvmfs volume name 
+# according to the cvmfs volume name
+# the next line is used by the cvmfs distributions scripts - NEVER CHANGE IT
 # to leave this alone: DO_NOT_CHANGE_OPT_SPHENIX
 
 # A general purpose login script for sPHENIX.  The allowed arguments
-# are '-a' and '-n'
+# are '-a', '-n' and '-h'
 # -a indicates that the script should append to the PATH
 # and LD_LIBRARY_PATH rather than replace them, and a trailing
 # argument used to indicate the version of the installed software to
 # use.  
-# -n forces the unset of all relevant variables so you can switch between
-# 32 bit and 64 bit setups
+# -n forces the unset of all relevant variables so you can switch from a
+# previously initialized setup (different build or PHENIX).
 # For instance, "new" (also the default value) will point you to
-# software in /afs/rhic.bnl.gov/phenix/software/new.  You can be specific if
-# you need to be.  Specifying "pro.5" will point you to software in
-# /afs/rhic.bnl.gov/phenix/software/pro.5
+# software in /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_new/new
+# You can be specific if you need to be:
+# Specifying "ana.230" will point you to software in
+# /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/release/release_ana/ana.230
+# -h just prints help (as does any other -<letter> flag)
 
 # Usage: source sphenix_setup.sh [-a] [-n] [-h] [version]
 
@@ -97,6 +100,7 @@ if [ $opt_n != 0 ]
   unset SIMULATION_MAIN
   unset TSEARCHPATH
   unset XERCESCROOT
+  unset XPLOAD_DIR
 fi
 
 # set afs sysname to replace @sys so links stay functional even if
@@ -342,6 +346,11 @@ then
   export XERCESCROOT=${G4_MAIN}
 fi
 
+if [[ -z "$XPLOAD_DIR" ]]
+then
+  export XPLOAD_DIR=${OPT_SPHENIX}/etc
+fi
+
 
 #Pythia8
 if [[ -z "$PYTHIA8" && -d $OFFLINE_MAIN/share/Pythia8 ]]
@@ -358,13 +367,13 @@ fi
 # Set up Insure++, if we have it
 if [ -z  "$PARASOFT" ] 
 then
-  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.3
+  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.5
 fi
 
 # Coverity
 if [ -z "$COVERITY_ROOT" ]
 then
-  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2019.03
+  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2021.12
 fi
 
 # point to scratch DB
@@ -377,7 +386,7 @@ fi
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
-  export GSEARCHPATH=.:PG:DCACHE
+  export GSEARCHPATH=.:PG:XROOTD:MINIO
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
@@ -492,4 +501,15 @@ source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
 then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
+fi
+
+# check if the s3 read only access is setup, otherwise add it
+if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
+   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read &> /dev/null
+fi
+
+# source local setups
+if [[ -f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh ]]
+then
+  source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh
 fi
