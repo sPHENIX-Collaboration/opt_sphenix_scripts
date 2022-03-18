@@ -100,6 +100,7 @@ if [ $opt_n != 0 ]
   unset SIMULATION_MAIN
   unset TSEARCHPATH
   unset XERCESCROOT
+  unset XPLOAD_DIR
 fi
 
 # set afs sysname to replace @sys so links stay functional even if
@@ -343,6 +344,11 @@ fi
 if [[ -z "$XERCESCROOT" ]]
 then
   export XERCESCROOT=${G4_MAIN}
+fi
+
+if [[ -z "$XPLOAD_DIR" ]]
+then
+  export XPLOAD_DIR=${OPT_SPHENIX}/etc
 fi
 
 

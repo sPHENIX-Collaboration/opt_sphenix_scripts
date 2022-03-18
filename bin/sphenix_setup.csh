@@ -87,6 +87,7 @@ if ($opt_n) then
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
   unsetenv XERCESCROOT
+  unsetenv XPLOAD_DIR
 endif
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
@@ -285,8 +286,8 @@ if (! $?XERCESCROOT) then
   setenv XERCESCROOT $G4_MAIN
 endif
 
-if (! $?XERCESCROOT) then
-  setenv XERCESCROOT $G4_MAIN
+if (! $?XPLOAD_DIR) then
+  setenv XPLOAD_DIR ${OPT_SPHENIX}/etc
 endif
 
 
