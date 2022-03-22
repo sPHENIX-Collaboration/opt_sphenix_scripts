@@ -100,6 +100,8 @@ if [ $opt_n != 0 ]
   unset SIMULATION_MAIN
   unset TSEARCHPATH
   unset XERCESCROOT
+  unset XPLOAD_CONFIG
+  unset XPLOAD_CONFIG_DIR
   unset XPLOAD_DIR
 fi
 
@@ -346,9 +348,9 @@ then
   export XERCESCROOT=${G4_MAIN}
 fi
 
-if [[ -z "$XPLOAD_DIR" ]]
+if [[ -z "$XPLOAD_CONFIG_DIR" ]]
 then
-  export XPLOAD_DIR=${OPT_SPHENIX}/etc
+  export XPLOAD_CONFIG_DIR=${OPT_SPHENIX}/etc
 fi
 
 
