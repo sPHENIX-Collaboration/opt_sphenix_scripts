@@ -32,6 +32,10 @@ opt_v="new"
 opt_b="none"
 
 this_script=$BASH_SOURCE
+if [ "x$this_script" = "x" ]; then
+    this_script=${(%):-%N} # for zsh
+fi
+
 #
 # Absolute path to this script, everything is relative to this path
 #
@@ -329,16 +333,15 @@ fi
 if [ -d $G4_MAIN ]
 then
 # normalize G4_MAIN to /opt/sphenix/core/geant4.Version
-    here=`pwd`
-    cd $G4_MAIN
+    pushd $G4_MAIN >/dev/null
     export G4_MAIN=`pwd -P`
-    cd $here
+    popd >/dev/null
 # this is for later possible use, extract the main version number
     g4basedir=`basename $G4_MAIN`
     g4mainversion=`echo $g4basedir | awk -F. '{print $2}'`
     if [ -f ${G4_MAIN}/bin/geant4.sh ] 
     then
-      source ${G4_MAIN}/bin/geant4.sh
+      pushd ${G4_MAIN}/bin >/dev/null; source ./geant4.sh; popd >/dev/null
     fi
 fi
 
@@ -391,12 +394,12 @@ then
   export GSEARCHPATH=.:PG:XROOTD:MINIO
 fi
 
-path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+_path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
 # we need to use the new PATH here, otherwise when switching between
 # cvmfs volumes the PATH from the last one creeps in here
-manpath=`env PATH=$path /usr/bin/man --path`
+_manpath=`env PATH=$_path /usr/bin/man --path`
 
-ldpath=/usr/local/lib64:/usr/lib64
+_ldpath=/usr/local/lib64:/usr/lib64
 
 #loop over all bin dirs and prepend to path
 for bindir in ${COVERITY_ROOT}/bin \
@@ -410,11 +413,11 @@ for bindir in ${COVERITY_ROOT}/bin \
 do
   if [ -d $bindir ]
   then
-    path=$bindir:$path
+    _path=$bindir:$_path
   fi
 done
 
-#loop over all lib dirs and prepend to ldpath
+#loop over all lib dirs and prepend to _ldpath
 for libdir in ${PARASOFT}/lib \
                 ${OPT_SPHENIX}/lhapdf-5.9.1/lib \
                 ${G4_MAIN}/lib \
@@ -431,10 +434,10 @@ for libdir in ${PARASOFT}/lib \
 do
   if [ -d $libdir ]
   then
-    ldpath=$libdir:$ldpath
+    _ldpath=$libdir:$_ldpath
   fi
 done
-# loop over all man dirs and prepend to manpath
+# loop over all man dirs and prepend to _manpath
 for mandir in ${ROOTSYS}/man \
               ${OPT_SPHENIX}/man \
               ${OPT_SPHENIX}/share/man \
@@ -444,7 +447,7 @@ for mandir in ${ROOTSYS}/man \
 do
   if [ -d $mandir ]
   then
-    manpath=$mandir:$manpath
+    _manpath=$mandir:$_manpath
   fi
 done
 
@@ -452,15 +455,15 @@ done
 
 
 
-# finally prepend . to path/ldpath
+# finally prepend . to _path/_ldpath
 
-path=.:$path
-ldpath=.:$ldpath
+_path=.:$_path
+_ldpath=.:$_ldpath
 
 #set paths
-PATH=${path}
-LD_LIBRARY_PATH=${ldpath}
-MANPATH=$manpath
+PATH=${_path}
+LD_LIBRARY_PATH=${_ldpath}
+MANPATH=${_manpath}
 
 # in case we want to append these paths opt_a=1
 if [ $opt_a != 0 ] 
@@ -490,9 +493,9 @@ PATH=`echo -n $PATH | sed 's/.$//'`
 LD_LIBRARY_PATH=`echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 MANPATH=`echo -n $MANPATH | sed 's/.$//'`
 
-unset ldpath
-unset path
-unset manpath
+unset _ldpath
+unset _path
+unset _manpath
 
 export PATH
 export LD_LIBRARY_PATH
@@ -502,6 +505,8 @@ source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 # setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
 if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
 then
+  # set BASH_SOURCE for zsh
+  BASH_SOURCE=${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh \
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
 fi
 

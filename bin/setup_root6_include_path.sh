@@ -30,7 +30,7 @@ then
     fi
   done
 fi 
-if [ $local_offline_main_done == 0 ]
+if [ $local_offline_main_done -eq 0 ]
 then
     ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$OFFLINE_MAIN/include
   for local_incdir in `find $OFFLINE_MAIN/include -maxdepth 1 -type d -print`
