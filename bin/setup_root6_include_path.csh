@@ -14,7 +14,7 @@ if ($#argv > 0) then
     if (-d $arg) then
       foreach local_incdir (`find $arg/include -maxdepth 1 -type d -print`)
         if (-d $local_incdir) then
-          if ($local_incdir !~ {*CGAL} && $local_incdir !~ {*Vc} && $local_incdir !~ {*rave}) then
+          if ($local_incdir !~ {*CGAL} && $local_incdir !~ {*Vc} && $local_incdir !~ {*rave} && $local_incdir !~ {*gloo} ) then
             setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$local_incdir
           endif
         endif
