@@ -3,7 +3,10 @@
   "port":    "80",
   "apiroot": "/api/cdb_rest",
   "apiver":  "",
-  "path":    "/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core/calibrations/DBTest",
+  "path": [
+          "/cvmfs/sphenix.sdcc.bnl.gov/cdb/test",
+          "/gpfs02/cvmfst0/sphenix.sdcc.bnl.gov/cdb/test"
+          ],
   "use_cache": true,
   "verbosity": 0,
   "retry_times": 5,
