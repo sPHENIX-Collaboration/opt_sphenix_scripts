@@ -125,7 +125,7 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-12.1.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -421,6 +421,9 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 # set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
 if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+endif
+if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
 endif
 
 # check if the s3 read only access is setup, otherwise add it

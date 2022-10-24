@@ -504,6 +504,10 @@ if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
 then
   source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
 fi
+if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
+then
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+fi
 
 # check if the s3 read only access is setup, otherwise add it
 if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
