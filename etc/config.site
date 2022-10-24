@@ -1,4 +1,4 @@
 # enable c++17 flag by default
-CXXFLAGS="-g -O2 -std=c++17"
+CXXFLAGS="-g -O2 -std=c++17 -Wno-volatile -Wno-deprecated-copy -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-dangling-pointer"
 # Allow LD_LIBRARY_PATH to override RPATH
 LDFLAGS='-Wl,--enable-new-dtags'
