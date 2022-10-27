@@ -310,11 +310,6 @@ then
   fi
 fi
 
-if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
-then
-  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
-fi
-
 # Add Geant4
 if [ -z "$G4_MAIN" ] 
 then
@@ -507,6 +502,18 @@ fi
 if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
 then
   source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+fi
+
+# we need to execute our python3 in our path to get the version
+#add our python packages and path to ROOT.py
+if [[ -z "$PYTHONPATH" ]]
+then
+ export PYTHONPATH=${ROOTSYS}/lib
+ pythonversion=`python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
+ if [[ -d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages ]]
+ then
+   export PYTHONPATH=${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+ fi
 fi
 
 # check if the s3 read only access is setup, otherwise add it

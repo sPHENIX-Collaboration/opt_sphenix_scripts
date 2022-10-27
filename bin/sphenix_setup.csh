@@ -248,11 +248,6 @@ if (-f $ROOTSYS/bin/root-config) then
   endif
 endif
 
-#add our python packages and path to ROOT.py
-if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
-endif
-
 # Add Geant4
 if (! $?G4_MAIN) then
     if (-d $OFFLINE_MAIN/geant4) then
@@ -424,6 +419,17 @@ if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
 endif
 if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
   source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
+endif
+
+# we need to execute our python3 in our path to get the version
+#add our python packages and path to ROOT.py
+if (! $?PYTHONPATH) then
+  setenv PYTHONPATH ${ROOTSYS}/lib
+  set pythonversion = `python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
+  if (-d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages) then
+    setenv PYTHONPATH ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  endif
+ unset pythonversion
 endif
 
 # check if the s3 read only access is setup, otherwise add it
