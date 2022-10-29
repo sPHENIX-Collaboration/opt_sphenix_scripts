@@ -197,7 +197,7 @@ fi
 # set site wide compiler options (no rpath hardcoding)
 if [[ -z "$CONFIG_SITE" ]]
 then
-  if [[ $opt_v = "debug" && -f ${OPT_SPHENIX}/etc/config_debug.site ]]
+  if [[ $opt_v = "debug"* && -f ${OPT_SPHENIX}/etc/config_debug.site ]]
   then
     export CONFIG_SITE=${OPT_SPHENIX}/etc/config_debug.site
   else
@@ -494,14 +494,18 @@ export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
-# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
-if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
+# use gcc 8.3 for clang builds
+if [[ $opt_v = "clang"* ]]
 then
-  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
-fi
-if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
-then
-  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+  if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
+  then
+    source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
+  fi
+else
+  if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
+  then
+    source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+  fi
 fi
 
 # we need to execute our python3 in our path to get the version
