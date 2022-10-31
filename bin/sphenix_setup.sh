@@ -494,18 +494,9 @@ export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
-# use gcc 8.3 for clang builds
-if [[ $opt_v = "clang"* ]]
+if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
 then
-  if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
-  then
-    source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
-  fi
-else
-  if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
-  then
-    source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
-  fi
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
 fi
 
 # we need to execute our python3 in our path to get the version
