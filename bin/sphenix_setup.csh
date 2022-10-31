@@ -413,15 +413,8 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 #set ROOT_INCLUDE_PATH for root6
 source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 
-# use gcc 8.3 for clang builds
-if ($opt_v =~ "clang*" ) then
-  if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
-    source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
-  endif
-else
-  if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
-    source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
-  endif
+if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
 endif
 
 # we need to execute our python3 in our path to get the version
