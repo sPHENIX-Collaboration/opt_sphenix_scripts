@@ -85,6 +85,7 @@ if [ $opt_n != 0 ]
   unset ${!G4*}
   unset GSEARCHPATH
   unset LHAPATH
+  unset LHAPDF_DATA_PATH
   unset ODBCINI
   unset OFFLINE_MAIN
   unset ONLINE_MAIN
@@ -329,11 +330,11 @@ then
   export PYTHONPATH=${ROOTSYS}/lib
   if [[ -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
   then
-    export PYTHONPATH=${PYTHONPATH}:${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages
+    export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
   fi
   if [[ -d ${OFFLINE_MAIN}/lib/python3.8/site-packages ]]
   then
-    export PYTHONPATH=${PYTHONPATH}:${OFFLINE_MAIN}/lib/python3.8/site-packages
+    export PYTHONPATH=${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
   fi
 fi
 

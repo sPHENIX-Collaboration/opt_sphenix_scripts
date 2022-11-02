@@ -71,6 +71,7 @@ if ($opt_n) then
   unsetenv G4*
   unsetenv GSEARCHPATH
   unsetenv LHAPATH
+  unsetenv LHAPDF_DATA_PATH
   unsetenv MANPATH
   unsetenv ODBCINI
   unsetenv OFFLINE_MAIN
@@ -253,10 +254,10 @@ endif
 if (! $?PYTHONPATH) then
   setenv PYTHONPATH ${ROOTSYS}/lib
   if (-d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages) then
-    setenv PYTHONPATH ${PYTHONPATH}:${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages
+    setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
   endif
   if (-d ${OFFLINE_MAIN}/lib/python3.8/site-packages) then
-    setenv PYTHONPATH ${PYTHONPATH}:${OFFLINE_MAIN}/lib/python3.8/site-packages
+    setenv PYTHONPATH ${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
   endif
 endif
 
