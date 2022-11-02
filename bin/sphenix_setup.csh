@@ -71,6 +71,7 @@ if ($opt_n) then
   unsetenv G4*
   unsetenv GSEARCHPATH
   unsetenv LHAPATH
+  unsetenv LHAPDF_DATA_PATH
   unsetenv MANPATH
   unsetenv ODBCINI
   unsetenv OFFLINE_MAIN
@@ -245,6 +246,17 @@ if (-f $ROOTSYS/bin/root-config) then
     set there=`pwd -P`
     set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
     cd $here
+  endif
+endif
+
+#LHAPDF 6
+if (! $?LHAPDF_DATA_PATH) then
+  if (-d ${OFFLINE_MAIN}/share/LHAPDF) then
+    setenv LHAPDF_DATA_PATH ${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if (-d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF) then
+      setenv LHAPDF_DATA_PATH ${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    endif
   endif
 endif
 
@@ -424,6 +436,9 @@ if (! $?PYTHONPATH) then
   set pythonversion = `python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
   if (-d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages) then
     setenv PYTHONPATH ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  endif
+  if (-d ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages) then
+    setenv PYTHONPATH ${PYTHONPATH}:${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages
   endif
  unset pythonversion
 endif

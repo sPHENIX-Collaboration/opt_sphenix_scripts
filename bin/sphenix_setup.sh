@@ -85,6 +85,7 @@ if [ $opt_n != 0 ]
   unset ${!G4*}
   unset GSEARCHPATH
   unset LHAPATH
+  unset LHAPDF_DATA_PATH
   unset ODBCINI
   unset OFFLINE_MAIN
   unset ONLINE_MAIN
@@ -310,6 +311,20 @@ then
   fi
 fi
 
+#LHAPDF 6
+if [[ -z $LHAPDF_DATA_PATH ]]
+then
+  if [[ -d ${OFFLINE_MAIN}/share/LHAPDF ]]
+  then
+    export LHAPDF_DATA_PATH=${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if [[ -d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF ]]
+    then
+      export LHAPDF_DATA_PATH=${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    fi
+  fi
+fi
+
 # Add Geant4
 if [ -z "$G4_MAIN" ] 
 then
@@ -503,12 +518,16 @@ fi
 #add our python packages and path to ROOT.py
 if [[ -z "$PYTHONPATH" ]]
 then
- export PYTHONPATH=${ROOTSYS}/lib
- pythonversion=`python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
- if [[ -d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages ]]
- then
-   export PYTHONPATH=${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
- fi
+  export PYTHONPATH=${ROOTSYS}/lib
+  pythonversion=`python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
+  if [[ -d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
+  if [[ -d ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
 fi
 
 # check if the s3 read only access is setup, otherwise add it
