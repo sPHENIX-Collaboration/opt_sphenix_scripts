@@ -310,9 +310,31 @@ then
   fi
 fi
 
-if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
+#LHAPDF 6
+if [[ -z $LHAPDF_DATA_PATH ]]
 then
-  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
+  if [[ -d ${OFFLINE_MAIN}/share/LHAPDF ]]
+  then
+    export LHAPDF_DATA_PATH=${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if [[ -d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF ]]
+    then
+      export LHAPDF_DATA_PATH=${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    fi
+  fi
+fi
+
+if [[ -z "$PYTHONPATH" ]]
+then
+  export PYTHONPATH=${ROOTSYS}/lib
+  if [[ -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
+  then
+    export PYTHONPATH=${PYTHONPATH}:${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages
+  fi
+  if [[ -d ${OFFLINE_MAIN}/lib/python3.8/site-packages ]]
+  then
+    export PYTHONPATH=${PYTHONPATH}:${OFFLINE_MAIN}/lib/python3.8/site-packages
+  fi
 fi
 
 # Add Geant4
