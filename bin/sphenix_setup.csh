@@ -176,6 +176,7 @@ if (! $?PERL5LIB) then
    endif
 endif
 
+#lhapdf 5
 if (! $?LHAPATH) then
   setenv LHAPATH ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
 endif
@@ -250,7 +251,24 @@ endif
 
 #add our python packages and path to ROOT.py
 if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
+  setenv PYTHONPATH ${ROOTSYS}/lib
+  if (-d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages) then
+    setenv PYTHONPATH ${PYTHONPATH}:${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages
+  endif
+  if (-d ${OFFLINE_MAIN}/lib/python3.8/site-packages) then
+    setenv PYTHONPATH ${PYTHONPATH}:${OFFLINE_MAIN}/lib/python3.8/site-packages
+  endif
+endif
+
+#LHAPDF 6
+if (! $?LHAPDF_DATA_PATH) then
+  if (-d ${OFFLINE_MAIN}/share/LHAPDF) then
+    setenv LHAPDF_DATA_PATH ${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if (-d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF) then
+      setenv LHAPDF_DATA_PATH ${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    endif
+  endif
 endif
 
 # Add Geant4
