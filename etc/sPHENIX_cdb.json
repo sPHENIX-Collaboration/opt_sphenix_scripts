@@ -4,8 +4,8 @@
   "apiroot": "/api/cdb_rest",
   "apiver":  "",
   "path": [
-          "/cvmfs/sphenix.sdcc.bnl.gov/cdb/test",
-          "/gpfs02/cvmfst0/sphenix.sdcc.bnl.gov/cdb/test"
+          "/cvmfs/sphenix.sdcc.bnl.gov/calibrations/sphnxpro/test",
+          "/sphenix/cvmfscalib/sphnxpro/test"
           ],
   "use_cache": true,
   "dry_run": false,
