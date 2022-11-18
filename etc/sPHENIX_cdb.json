@@ -8,6 +8,7 @@
           "/sphenix/cvmfscalib/sphnxpro/test"
           ],
   "use_cache": true,
+  "dry_run": false,
   "verbosity": 0,
   "retry_times": 5,
   "retry_max_delay": 60
