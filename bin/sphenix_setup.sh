@@ -85,6 +85,7 @@ if [ $opt_n != 0 ]
   unset ${!G4*}
   unset GSEARCHPATH
   unset LHAPATH
+  unset LHAPDF_DATA_PATH
   unset ODBCINI
   unset OFFLINE_MAIN
   unset ONLINE_MAIN
@@ -100,6 +101,9 @@ if [ $opt_n != 0 ]
   unset SIMULATION_MAIN
   unset TSEARCHPATH
   unset XERCESCROOT
+  unset XPLOAD_CONFIG
+  unset XPLOAD_CONFIG_DIR
+  unset XPLOAD_DIR
 fi
 
 # set afs sysname to replace @sys so links stay functional even if
@@ -307,9 +311,31 @@ then
   fi
 fi
 
-if [[ -z "$PYTHONPATH" && -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
+#LHAPDF 6
+if [[ -z $LHAPDF_DATA_PATH ]]
 then
-  export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
+  if [[ -d ${OFFLINE_MAIN}/share/LHAPDF ]]
+  then
+    export LHAPDF_DATA_PATH=${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if [[ -d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF ]]
+    then
+      export LHAPDF_DATA_PATH=${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    fi
+  fi
+fi
+
+if [[ -z "$PYTHONPATH" ]]
+then
+  export PYTHONPATH=${ROOTSYS}/lib
+  if [[ -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
+  then
+    export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
+  fi
+  if [[ -d ${OFFLINE_MAIN}/lib/python3.8/site-packages ]]
+  then
+    export PYTHONPATH=${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
+  fi
 fi
 
 # Add Geant4
@@ -343,6 +369,11 @@ fi
 if [[ -z "$XERCESCROOT" ]]
 then
   export XERCESCROOT=${G4_MAIN}
+fi
+
+if [[ -z "$XPLOAD_CONFIG_DIR" ]]
+then
+  export XPLOAD_CONFIG_DIR=${OPT_SPHENIX}/etc
 fi
 
 
@@ -380,7 +411,7 @@ fi
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
-  export GSEARCHPATH=.:PG:XROOTD:MINIO
+  export GSEARCHPATH=.:PG:LUSTRE:XROOTD:MINIO
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)

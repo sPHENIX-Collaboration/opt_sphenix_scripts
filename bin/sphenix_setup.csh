@@ -71,6 +71,7 @@ if ($opt_n) then
   unsetenv G4*
   unsetenv GSEARCHPATH
   unsetenv LHAPATH
+  unsetenv LHAPDF_DATA_PATH
   unsetenv MANPATH
   unsetenv ODBCINI
   unsetenv OFFLINE_MAIN
@@ -87,6 +88,9 @@ if ($opt_n) then
   unsetenv SIMULATION_MAIN
   unsetenv TSEARCHPATH
   unsetenv XERCESCROOT
+  unsetenv XPLOAD_CONFIG
+  unsetenv XPLOAD_CONFIG_DIR
+  unsetenv XPLOAD_DIR
 endif
 # set afs sysname to replace @sys so links stay functional even if
 # the afs sysname changes in the future
@@ -173,6 +177,7 @@ if (! $?PERL5LIB) then
    endif
 endif
 
+#lhapdf 5
 if (! $?LHAPATH) then
   setenv LHAPATH ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
 endif
@@ -247,7 +252,24 @@ endif
 
 #add our python packages and path to ROOT.py
 if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${ROOTSYS}/lib
+  setenv PYTHONPATH ${ROOTSYS}/lib
+  if (-d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages) then
+    setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
+  endif
+  if (-d ${OFFLINE_MAIN}/lib/python3.8/site-packages) then
+    setenv PYTHONPATH ${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
+  endif
+endif
+
+#LHAPDF 6
+if (! $?LHAPDF_DATA_PATH) then
+  if (-d ${OFFLINE_MAIN}/share/LHAPDF) then
+    setenv LHAPDF_DATA_PATH ${OFFLINE_MAIN}/share/LHAPDF
+  else
+    if (-d ${OPT_SPHENIX}/LHAPDF/share/LHAPDF) then
+      setenv LHAPDF_DATA_PATH ${OPT_SPHENIX}/LHAPDF/share/LHAPDF
+    endif
+  endif
 endif
 
 # Add Geant4
@@ -285,8 +307,8 @@ if (! $?XERCESCROOT) then
   setenv XERCESCROOT $G4_MAIN
 endif
 
-if (! $?XERCESCROOT) then
-  setenv XERCESCROOT $G4_MAIN
+if (! $?XPLOAD_CONFIG_DIR) then
+  setenv XPLOAD_CONFIG_DIR ${OPT_SPHENIX}/etc
 endif
 
 
@@ -322,7 +344,7 @@ endif
 
 # File catalog search path
 if (! $?GSEARCHPATH) then
-    setenv GSEARCHPATH .:PG:XROOTD:MINIO
+    setenv GSEARCHPATH .:PG:LUSTRE:XROOTD:MINIO
 endif
 
 # set initial paths, all following get prepended
