@@ -198,7 +198,7 @@ fi
 # set site wide compiler options (no rpath hardcoding)
 if [[ -z "$CONFIG_SITE" ]]
 then
-  if [[ $opt_v = "debug" && -f ${OPT_SPHENIX}/etc/config_debug.site ]]
+  if [[ $opt_v = "debug"* && -f ${OPT_SPHENIX}/etc/config_debug.site ]]
   then
     export CONFIG_SITE=${OPT_SPHENIX}/etc/config_debug.site
   else
@@ -322,19 +322,6 @@ then
     then
       export LHAPDF_DATA_PATH=${OPT_SPHENIX}/LHAPDF/share/LHAPDF
     fi
-  fi
-fi
-
-if [[ -z "$PYTHONPATH" ]]
-then
-  export PYTHONPATH=${ROOTSYS}/lib
-  if [[ -d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages ]]
-  then
-    export PYTHONPATH=${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
-  fi
-  if [[ -d ${OFFLINE_MAIN}/lib/python3.8/site-packages ]]
-  then
-    export PYTHONPATH=${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
   fi
 fi
 
@@ -522,10 +509,25 @@ export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
-# setup gcc 8.301 (copied from /cvmfs/sft.cern.ch/lcg/releases)
-if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
+if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
 then
-  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+fi
+
+# we need to execute our python3 in our path to get the version
+#add our python packages and path to ROOT.py
+if [[ -z "$PYTHONPATH" ]]
+then
+  export PYTHONPATH=${ROOTSYS}/lib
+  pythonversion=`python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
+  if [[ -d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
+  if [[ -d ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
 fi
 
 # check if the s3 read only access is setup, otherwise add it

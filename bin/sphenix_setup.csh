@@ -126,7 +126,7 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-12.1.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -153,7 +153,7 @@ endif
 
 # set site wide compiler options (no rpath hardcoding)
 if (! $?CONFIG_SITE) then
-  if ($opt_v =~ "debug" ) then
+  if ($opt_v =~ "debug*" ) then
     if (-f ${OPT_SPHENIX}/etc/config_debug.site) then
       setenv CONFIG_SITE ${OPT_SPHENIX}/etc/config_debug.site
     endif
@@ -247,17 +247,6 @@ if (-f $ROOTSYS/bin/root-config) then
     set there=`pwd -P`
     set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
     cd $here
-  endif
-endif
-
-#add our python packages and path to ROOT.py
-if (! $?PYTHONPATH) then
-  setenv PYTHONPATH ${ROOTSYS}/lib
-  if (-d ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages) then
-    setenv PYTHONPATH ${OPT_SPHENIX}/pythonpackages/lib/python3.8/site-packages:${PYTHONPATH}
-  endif
-  if (-d ${OFFLINE_MAIN}/lib/python3.8/site-packages) then
-    setenv PYTHONPATH ${OFFLINE_MAIN}/lib/python3.8/site-packages:${PYTHONPATH}
   endif
 endif
 
@@ -437,9 +426,22 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 #set ROOT_INCLUDE_PATH for root6
 source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 
-# set up gcc 8.3 is installed (if this exists we are in the gcc 8.3 area
-if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
-  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
+endif
+
+# we need to execute our python3 in our path to get the version
+#add our python packages and path to ROOT.py
+if (! $?PYTHONPATH) then
+  setenv PYTHONPATH ${ROOTSYS}/lib
+  set pythonversion = `python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}'`
+  if (-d ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages) then
+    setenv PYTHONPATH ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
+  endif
+  if (-d ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages) then
+    setenv PYTHONPATH ${PYTHONPATH}:${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages
+  endif
+ unset pythonversion
 endif
 
 # check if the s3 read only access is setup, otherwise add it
