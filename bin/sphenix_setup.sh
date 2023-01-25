@@ -528,6 +528,8 @@ then
   then
     export PYTHONPATH=${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
   fi
+# last not least add ./ to run shrek which is installed in the local dir
+  export PYTHONPATH=.:${PYTHONPATH}
 fi
 
 # check if the s3 read only access is setup, otherwise add it

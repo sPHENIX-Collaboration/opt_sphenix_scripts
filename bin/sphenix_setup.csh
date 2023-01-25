@@ -439,8 +439,10 @@ if (! $?PYTHONPATH) then
     setenv PYTHONPATH ${OPT_SPHENIX}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
   endif
   if (-d ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages) then
-    setenv PYTHONPATH ${PYTHONPATH}:${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages
+    setenv PYTHONPATH ${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
   endif
+# last not least add ./ to run shrek which is installed in the local dir
+ setenv PYTHONPATH .:${PYTHONPATH}
  unset pythonversion
 endif
 
