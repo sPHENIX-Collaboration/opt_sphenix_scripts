@@ -1,1 +1,0 @@
-sphenix_setup.sh
