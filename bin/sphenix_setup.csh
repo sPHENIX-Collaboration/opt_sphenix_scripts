@@ -73,6 +73,7 @@ if ($opt_n) then
   unsetenv LHAPATH
   unsetenv LHAPDF_DATA_PATH
   unsetenv MANPATH
+  unsetenv NOPAYLOADCLIENT_CONF
   unsetenv ODBCINI
   unsetenv OFFLINE_MAIN
   unsetenv ONLINE_MAIN
@@ -300,6 +301,9 @@ if (! $?XPLOAD_CONFIG_DIR) then
   setenv XPLOAD_CONFIG_DIR ${OPT_SPHENIX}/etc
 endif
 
+if (! $?NOPAYLOADCLIENT_CONF) then
+  setenv NOPAYLOADCLIENT_CONF ${OPT_SPHENIX}/etc/sPHENIX_newcdb.json
+endif
 
 #Pythia8
 if (! $?PYTHIA8) then
