@@ -86,6 +86,7 @@ if [ $opt_n != 0 ]
   unset GSEARCHPATH
   unset LHAPATH
   unset LHAPDF_DATA_PATH
+  unset NOPAYLOADCLIENT_CONF
   unset ODBCINI
   unset OFFLINE_MAIN
   unset ONLINE_MAIN
@@ -363,6 +364,10 @@ then
   export XPLOAD_CONFIG_DIR=${OPT_SPHENIX}/etc
 fi
 
+if [[ -z "$NOPAYLOADCLIENT_CONF" ]]
+then
+  export NOPAYLOADCLIENT_CONF=${OPT_SPHENIX}/etc/sPHENIX_newcdb.json
+fi
 
 #Pythia8
 if [[ -z "$PYTHIA8" && -d $OFFLINE_MAIN/share/Pythia8 ]]
