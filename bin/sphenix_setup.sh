@@ -396,7 +396,7 @@ fi
 # point to scratch DB
 if [ -z "$PGHOST" ]
 then
-  export PGHOST=sphnxdbmaster
+  export PGHOST=sphnxdbmaster.rcf.bnl.gov
   export PGUSER=phnxrc
 fi
 
