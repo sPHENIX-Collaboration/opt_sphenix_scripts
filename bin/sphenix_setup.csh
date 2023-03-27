@@ -331,7 +331,7 @@ endif
 
 #database servers, not used right now
 if (! $?PGHOST) then
-  setenv PGHOST sphnxdbmaster
+  setenv PGHOST sphnxdbmaster.rcf.bnl.gov
   setenv PGUSER phnxrc
 endif
 
