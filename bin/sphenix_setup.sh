@@ -132,14 +132,13 @@ scriptpath=`dirname "$this_script"`
 if [[ $scriptpath == *"/online/Debian"* ]]
 then
   optsphenixindex=`echo $scriptpath | awk '{print index($0,"/online/Debian")}'`
+  optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
 fi
 
-optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
-
 # just in case the above screws up, give it the default in rcf
-if [ ! -d $optbasepath ]
+if [[ -z "$optbasepath" || ! -d $optbasepath ]]
 then
-  optbasepath="/online/Debian"
+  optbasepath="/cvmfs/sphenix.sdcc.bnl.gov"
 fi
 if [[ -z "$force_base" && -d $force_base ]]
 then
@@ -170,7 +169,7 @@ fi
 
 if [ -z "$ONLINE_MAIN" ]
 then
-  export ONLINE_MAIN=${optbasepath}/current
+  export ONLINE_MAIN=${optbasepath}/online/Debian/current
 fi
 
 
