@@ -238,7 +238,7 @@ done
 
 #loop over all lib dirs and prepend to ldpath
 for libdir in   ${ONLINE_MAIN}/lib \
-                ${ONLINE_MAIN}/lib64
+                ${ONLINE_MAIN}/lib64 \
                 ${OPT_SPHENIX}/lib \
                 ${OPT_SPHENIX}/lib64 \
                 ${rootlibdir}
@@ -252,7 +252,7 @@ done
 for mandir in ${ONLINE_MAIN}/share/man \
               ${OPT_SPHENIX}/man \
               ${OPT_SPHENIX}/share/man \
-              ${ROOTSYS}/man \
+              ${ROOTSYS}/man
 do
   if [ -d $mandir ]
   then
