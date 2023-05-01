@@ -339,12 +339,6 @@ if (! $?COVERITY_ROOT) then
   setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-2021.12
 endif
 
-#database servers, not used right now
-if (! $?PGHOST) then
-  setenv PGHOST sphnxdbmaster.rcf.bnl.gov
-  setenv PGUSER phnxrc
-endif
-
 # File catalog search path
 if (! $?GSEARCHPATH) then
     setenv GSEARCHPATH .:PG:LUSTRE:XROOTD:MINIO
