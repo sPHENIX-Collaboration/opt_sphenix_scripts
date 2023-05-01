@@ -81,6 +81,7 @@ if ($opt_n) then
   unsetenv PARASOFT
   unsetenv PERL5LIB
   unsetenv PGHOST
+  unsetenv PGUSER
   unsetenv PG_PHENIX_DBNAME
   unsetenv PYTHIA8
   unsetenv PYTHONPATH
@@ -92,6 +93,13 @@ if ($opt_n) then
   unsetenv XPLOAD_CONFIG
   unsetenv XPLOAD_CONFIG_DIR
   unsetenv XPLOAD_DIR
+endif
+
+if (! $?PGHOST) then
+  setenv PGHOST sphnxdbmaster.sdcc.bnl.gov
+endif
+if (! $?PGUSER) then
+  setenv PGUSER phnxrc
 endif
 
 # turn off gtk warning about accessibility bus

@@ -94,6 +94,7 @@ if [ $opt_n != 0 ]
   unset PARASOFT
   unset PERL5LIB
   unset PGHOST
+  unset PGUSER
   unset PG_PHENIX_DBNAME
   unset PYTHIA8
   unset PYTHONPATH
@@ -105,6 +106,17 @@ if [ $opt_n != 0 ]
   unset XPLOAD_CONFIG
   unset XPLOAD_CONFIG_DIR
   unset XPLOAD_DIR
+fi
+
+
+if [ ! -z "$PGHOST" ]
+then
+  export PGHOST=sphnxdbmaster.sdcc.bnl.gov
+fi
+
+if [ ! -z "$PGUSER" ]
+then
+  export PGUSER=phnxrc
 fi
 
 
