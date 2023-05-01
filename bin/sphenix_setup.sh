@@ -405,13 +405,6 @@ then
   export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2021.12
 fi
 
-# point to scratch DB
-if [ -z "$PGHOST" ]
-then
-  export PGHOST=sphnxdbmaster.rcf.bnl.gov
-  export PGUSER=phnxrc
-fi
-
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
