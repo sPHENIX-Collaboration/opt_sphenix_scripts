@@ -109,12 +109,12 @@ if [ $opt_n != 0 ]
 fi
 
 # set our postgres defaults
-if [ ! -z "$PGHOST" ]
+if [ -z "$PGHOST" ]
 then
   export PGHOST=sphnxdbmaster.sdcc.bnl.gov
 fi
 
-if [ ! -z "$PGUSER" ]
+if [ -z "$PGUSER" ]
 then
   export PGUSER=phnxrc
 fi
