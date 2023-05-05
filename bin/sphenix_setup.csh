@@ -312,7 +312,7 @@ if (! $?XPLOAD_CONFIG_DIR) then
 endif
 
 if (! $?NOPAYLOADCLIENT_CONF) then
-  setenv NOPAYLOADCLIENT_CONF ${OPT_SPHENIX}/etc/sPHENIX_cdb.json
+  setenv NOPAYLOADCLIENT_CONF ${OPT_SPHENIX}/etc/sPHENIX_newcdb.json
 endif
 
 #Pythia8
