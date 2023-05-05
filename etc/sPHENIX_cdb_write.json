@@ -3,10 +3,7 @@
   "port":    "80",
   "apiroot": "/api/cdb_rest",
   "apiver":  "",
-  "path": [
-          "/cvmfs/sphenix.sdcc.bnl.gov/calibrations/sphnxpro/test",
-          "/sphenix/cvmfscalib/sphnxpro/test"
-          ],
+  "path":    "/sphenix/cvmfscalib/sphnxpro/test",
   "use_cache": true,
   "dry_run": false,
   "verbosity": 0,
