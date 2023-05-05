@@ -1,15 +1,11 @@
 {
-  "host":    "nopayloaddb-nopayloaddb.apps.rcf.bnl.gov",
-  "port":    "80",
-  "apiroot": "/api/cdb_rest",
-  "apiver":  "",
-  "path": [
-          "/cvmfs/sphenix.sdcc.bnl.gov/calibrations/sphnxpro/test",
-          "/sphenix/cvmfscalib/sphnxpro/test"
-          ],
-  "use_cache": true,
-  "dry_run": false,
-  "verbosity": 0,
-  "retry_times": 5,
-  "retry_max_delay": 60
+  "base_url": "nopayloaddb.apps.rcf.bnl.gov",
+  "api_res":  "/api/cdb_rest/",
+  "write_dir": "/sphenix/cvmfscalib/sphnxpro/cdb/",
+  "read_dir_list": ["/cvmfs/sphenix.sdcc.bnl.gov/calibrations/sphnxpro/cdb/", "/sphenix/cvmfscalib/sphnxpro/cdb/"],
+  "n_retries": 5,
+  "print_time_stamps": false,
+  "cache_life_time": 10,
+  "cache_max_mb": 1,
+  "use_fake_backend": false
 }

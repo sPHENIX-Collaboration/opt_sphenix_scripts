@@ -378,7 +378,7 @@ fi
 
 if [[ -z "$NOPAYLOADCLIENT_CONF" ]]
 then
-  export NOPAYLOADCLIENT_CONF=${OPT_SPHENIX}/etc/sPHENIX_newcdb.json
+  export NOPAYLOADCLIENT_CONF=${OPT_SPHENIX}/etc/sPHENIX_cdb.json
 fi
 
 #Pythia8
