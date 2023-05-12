@@ -135,6 +135,9 @@ endif
 if (! $?ONLINE_MAIN) then
   setenv ONLINE_MAIN $OPT_SPHENIX/current
 endif
+if (! $?OFFLINE_MAIN) then
+  setenv OFFLINE_MAIN $OPT_SPHENIX/current
+endif
 
 # ROOT
 if (! $?ROOTSYS) then
