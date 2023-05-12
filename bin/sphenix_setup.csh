@@ -138,6 +138,20 @@ endif
 if (! $?OFFLINE_MAIN) then
   setenv OFFLINE_MAIN $OPT_SPHENIX/current
 endif
+if (-d $ONLINE_MAIN) then
+  set here=`pwd`
+  cd $ONLINE_MAIN
+  set there=`pwd -P`
+  setenv ONLINE_MAIN $there
+  cd $here
+endif
+if (-d $OFFLINE_MAIN) then
+  set here=`pwd`
+  cd $OFFLINE_MAIN
+  set there=`pwd -P`
+  setenv OFFLINE_MAIN $there
+  cd $here
+endif
 
 # ROOT
 if (! $?ROOTSYS) then
