@@ -171,6 +171,10 @@ if [ -z "$ONLINE_MAIN" ]
 then
   export ONLINE_MAIN=${optbasepath}/online/Debian/current
 fi
+if [ -z "$OFFLINE_MAIN" ]
+then
+  export OFFLINE_MAIN=${optbasepath}/online/Debian/current
+fi
 
 
 if [ -d $ONLINE_MAIN ]
@@ -178,6 +182,14 @@ then
   here=`pwd`
   cd $ONLINE_MAIN
   export ONLINE_MAIN=`pwd -P`
+  cd $here
+fi
+
+if [ -d $OFFLINE_MAIN ]
+then
+  here=`pwd`
+  cd $OFFLINE_MAIN
+  export OFFLINE_MAIN=`pwd -P`
   cd $here
 fi
 
