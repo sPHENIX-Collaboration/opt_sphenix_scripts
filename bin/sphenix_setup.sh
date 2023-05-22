@@ -81,6 +81,7 @@ if [ $opt_n != 0 ]
   unset ${!CERN*}
   unset CALIBRATIONROOT
   unset CONFIG_SITE
+  unset CPLUS_INCLUDE_PATH
   unset CVSROOT
   unset ${!G4*}
   unset GSEARCHPATH

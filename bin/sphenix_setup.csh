@@ -66,7 +66,7 @@ if ($opt_n) then
   unsetenv CERN*
   unsetenv CALIBRATIONROOT
   unsetenv CONFIG_SITE
-  unsetenv COVERITY_ROOT
+  unsetenv CPLUS_INCLUDE_PATH
   unsetenv CVSROOT
   unsetenv G4*
   unsetenv GSEARCHPATH
