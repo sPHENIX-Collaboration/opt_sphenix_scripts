@@ -66,7 +66,7 @@ if ($opt_n) then
   unsetenv CERN*
   unsetenv CALIBRATIONROOT
   unsetenv CONFIG_SITE
-  unsetenv COVERITY_ROOT
+  unsetenv CPLUS_INCLUDE_PATH
   unsetenv CVSROOT
   unsetenv G4*
   unsetenv GSEARCHPATH
@@ -334,11 +334,6 @@ if (! $?PARASOFT) then
   setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.5
 endif
 
-# Coverity
-if (! $?COVERITY_ROOT) then
-  setenv COVERITY_ROOT /afs/rhic.bnl.gov/app/coverity-2021.12
-endif
-
 # File catalog search path
 if (! $?GSEARCHPATH) then
     setenv GSEARCHPATH .:PG:LUSTRE:XROOTD:MINIO
@@ -351,8 +346,7 @@ set manpath = `/usr/bin/man --path`
 set ldpath = /usr/local/lib64:/usr/lib64
 
 # loop over all bin dirs and prepend to path
-foreach bindir (${COVERITY_ROOT}/bin \
-                ${PARASOFT}/bin \
+foreach bindir (${PARASOFT}/bin \
                 ${G4_MAIN}/bin \
                 ${rootbindir} \
                 ${OPT_SPHENIX}/bin \

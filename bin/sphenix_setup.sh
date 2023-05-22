@@ -81,6 +81,7 @@ if [ $opt_n != 0 ]
   unset ${!CERN*}
   unset CALIBRATIONROOT
   unset CONFIG_SITE
+  unset CPLUS_INCLUDE_PATH
   unset CVSROOT
   unset ${!G4*}
   unset GSEARCHPATH
@@ -399,12 +400,6 @@ then
   export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.5
 fi
 
-# Coverity
-if [ -z "$COVERITY_ROOT" ]
-then
-  export COVERITY_ROOT=/afs/rhic.bnl.gov/app/coverity-2021.12
-fi
-
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
@@ -419,8 +414,7 @@ manpath=`env PATH=$path /usr/bin/man --path`
 ldpath=/usr/local/lib64:/usr/lib64
 
 #loop over all bin dirs and prepend to path
-for bindir in ${COVERITY_ROOT}/bin \
-              ${PARASOFT}/bin \
+for bindir in ${PARASOFT}/bin \
               ${G4_MAIN}/bin \
               ${rootbindir} \
               ${OPT_SPHENIX}/bin \
