@@ -213,9 +213,9 @@ foreach mandir (${ONLINE_MAIN}/share/man \
   endif
 end
 
-# finally prepend . to path/ldpath
+# finally prepend . and the gcc8.3 utils bin for valgrind to path/ldpath
 
-set path = (. $path)
+set path = (. /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils/bin $path)
 set ldpath=.:${ldpath}
 
 # Set some actual environment vars

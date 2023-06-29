@@ -278,7 +278,7 @@ done
 
 # finally prepend . to path/ldpath
 
-path=.:$path
+path=.:/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils/bin:$path
 ldpath=.:$ldpath
 
 #set paths
