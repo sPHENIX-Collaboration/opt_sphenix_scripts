@@ -23,7 +23,7 @@ limit coredumpsize 0
 set opt_a = 0
 set opt_b = 0
 set opt_n = 0
-set opt_v = "new"
+set opt_v = "ana"
 
 foreach arg ($*)
     switch ($arg)

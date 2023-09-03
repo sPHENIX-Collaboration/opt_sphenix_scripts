@@ -28,7 +28,7 @@ ulimit -c 0
 
 opt_a=0
 opt_n=0
-opt_v="new"
+opt_v="ana"
 opt_b="none"
 
 this_script=$BASH_SOURCE
