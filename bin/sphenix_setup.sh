@@ -546,3 +546,6 @@ if [[ -f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh ]]
 then
   source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh
 fi
+
+# set up rucio
+[[ -f /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh ]] && source /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh

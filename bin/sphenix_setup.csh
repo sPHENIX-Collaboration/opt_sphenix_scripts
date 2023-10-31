@@ -461,5 +461,9 @@ if (-f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh) then
   source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.csh
 endif
 
+if (-f /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.csh) then
+  source /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.csh
+endif
+
 #unset local variables
 unset local_cvmfsvolume
