@@ -537,9 +537,9 @@ then
 fi
 
 # check if the s3 read only access is setup, otherwise add it
-if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
-   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read &> /dev/null
-fi
+#if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
+#   mcs3 config host add eicS3 https://dtn01.sdcc.bnl.gov:9000/ eicS3read eicS3read &> /dev/null
+#fi
 
 # source local setups
 #if [[ -f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh ]]
