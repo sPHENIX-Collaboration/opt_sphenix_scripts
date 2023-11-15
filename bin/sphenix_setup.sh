@@ -542,10 +542,10 @@ if [ ! -d $HOME/.mcs3 ] ||  ! grep -q eicS3read "$HOME/.mcs3/config.json" ; then
 fi
 
 # source local setups
-if [[ -f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh ]]
-then
-  source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh
-fi
+#if [[ -f /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh ]]
+#then
+#  source /sphenix/user/local_setup_scripts/bin/mc_host_sphenixS3.sh
+#fi
 
 # set up rucio
-[[ -f /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh ]] && source /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh
+#[[ -f /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh ]] && source /cvmfs/sphenix.sdcc.bnl.gov/rucio-clients/setup.sh
