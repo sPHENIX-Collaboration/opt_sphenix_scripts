@@ -39,8 +39,8 @@ then
       fi
     fi
   done
-  export LD_LIBRARY_PATH=${local_ldpath}:$LD_LIBRARY_PATH
-  export PATH=${local_bpath}:${PATH}
+  [ ! -z "$local_ldpath" ] && export LD_LIBRARY_PATH=${local_ldpath}:$LD_LIBRARY_PATH
+  [ ! -z "$local_bpath" ] && export PATH=${local_bpath}:$PATH
   echo LD_LIBRARY_PATH now $LD_LIBRARY_PATH
   echo PATH now $PATH
 #unset locally used variables

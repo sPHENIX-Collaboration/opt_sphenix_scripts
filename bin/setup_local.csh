@@ -25,7 +25,9 @@ if ($#argv > 0) then
       set local_bpath=($local_bpath $binpath)
     endif
   end
-  setenv LD_LIBRARY_PATH ${local_ldpath}:$LD_LIBRARY_PATH
+  if ($local_ldpath != "") then
+    setenv LD_LIBRARY_PATH ${local_ldpath}:$LD_LIBRARY_PATH
+  endif
   set path = ($local_bpath $path)
   echo LD_LIBRARY_PATH now $LD_LIBRARY_PATH
   echo path now $path
