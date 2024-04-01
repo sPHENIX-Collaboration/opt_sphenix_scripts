@@ -424,13 +424,9 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 # Perl - we have our own version, so run this after our path is set up
 set perlversion=`perl -e'print substr($^V, 1)'`
-echo setting perlversion to ${perlversion}
-
 if (! $?PERL5LIB) then
-echo setting PERL5LIB
   set perldirs = (${OPT_SPHENIX}/lib64/site_perl/${perlversion} ${OPT_SPHENIX}/lib/site_perl/${perlversion} ${OPT_UTILS}/lib64/site_perl/${perlversion} ${OPT_UTILS}/lib/site_perl/${perlversion})
   foreach perldir ($perldirs)
-  echo checking $perldir
     if (-d $perldir) then
       if (! $?PERL5LIB) then
         setenv PERL5LIB $perldir
