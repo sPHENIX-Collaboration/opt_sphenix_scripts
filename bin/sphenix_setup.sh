@@ -513,9 +513,9 @@ export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
-if [[ -f ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.sh ]]
+if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
 then
-  source ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.sh
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
 fi
 
 # we need to execute our python3 in our path to get the version
