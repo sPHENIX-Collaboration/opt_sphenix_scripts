@@ -137,7 +137,7 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/almalinux-9.2/gcc-13.1.0
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/almalinux-9.2/gcc-14.2.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -428,8 +428,8 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 #set ROOT_INCLUDE_PATH for root6
 source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 
-if (-f  ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh) then
-  source ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh
+if (-f  ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.csh
 endif
 
 # we need to execute our python3 in our path to get the version
