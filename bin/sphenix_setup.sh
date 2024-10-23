@@ -222,23 +222,6 @@ then
     fi
   fi
 fi
-# Perl
-if [ -z "$PERL5LIB" ]
-then
-   if [ -d ${OPT_SPHENIX}/share/perl5 ]
-   then
-     export PERL5LIB=${OPT_SPHENIX}/lib64/perl5:${OPT_SPHENIX}/share/perl5
-   fi
-   if [ -d ${OPT_UTILS}/share/perl5 ] 
-   then
-     if [ -z "$PERL5LIB" ]
-     then
-       export PERL5LIB=${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     else
-       export PERL5LIB=${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     fi
-   fi
-fi
 
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
 then
@@ -516,6 +499,25 @@ source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 if [[ -f ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh ]]
 then
   source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.sh
+fi
+
+# Perl - we have our own version, so run this after our path is set up
+#set perlversion=`perl -e'print substr($^V, 1)'`
+if [ -z "$PERL5LIB" ]
+then
+   if [ -d ${OPT_SPHENIX}/share/perl5 ]
+   then
+     export PERL5LIB=${OPT_SPHENIX}/lib64/perl5:${OPT_SPHENIX}/share/perl5
+   fi
+   if [ -d ${OPT_UTILS}/share/perl5 ]
+   then
+     if [ -z "$PERL5LIB" ]
+     then
+       export PERL5LIB=${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
+     else
+       export PERL5LIB=${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
+     fi
+   fi
 fi
 
 # we need to execute our python3 in our path to get the version
