@@ -174,19 +174,6 @@ if (! $?CONFIG_SITE) then
     endif
   endif
 endif
-# Perl
-if (! $?PERL5LIB) then
-   if (-d ${OPT_SPHENIX}/share/perl5) then
-     setenv PERL5LIB ${OPT_SPHENIX}/lib64/perl5:${OPT_SPHENIX}/share/perl5
-   endif
-   if (-d ${OPT_UTILS}/share/perl5) then
-     if (! $?PERL5LIB) then
-       setenv PERL5LIB ${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     else
-       setenv PERL5LIB ${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     endif
-   endif
-endif
 
 #lhapdf 5
 if (! $?LHAPATH) then
@@ -430,6 +417,21 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 
 if (-f  ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh) then
   source ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh
+endif
+
+# Perl - we have our own version, so run this after our path is set up
+#set perlversion=`perl -e'print substr($^V, 1)'`
+if (! $?PERL5LIB) then
+  set perldirs = (${OPT_SPHENIX}/lib64/site_perl ${OPT_SPHENIX}/lib/site_perl ${OPT_UTILS}/lib64/site_perl ${OPT_UTILS}/lib/site_perl)
+  foreach perldir ($perldirs)
+    if (-d $perldir) then
+      if (! $?PERL5LIB) then
+        setenv PERL5LIB $perldir
+      else
+        setenv PERL5LIB ${PERL5LIB}:${perldir}
+      endif
+    endif
+  end
 endif
 
 # we need to execute our python3 in our path to get the version
