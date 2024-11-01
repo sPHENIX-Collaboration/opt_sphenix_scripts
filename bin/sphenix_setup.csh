@@ -174,19 +174,6 @@ if (! $?CONFIG_SITE) then
     endif
   endif
 endif
-# Perl
-if (! $?PERL5LIB) then
-   if (-d ${OPT_SPHENIX}/share/perl5) then
-     setenv PERL5LIB ${OPT_SPHENIX}/lib64/perl5:${OPT_SPHENIX}/share/perl5
-   endif
-   if (-d ${OPT_UTILS}/share/perl5) then
-     if (! $?PERL5LIB) then
-       setenv PERL5LIB ${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     else
-       setenv PERL5LIB ${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     endif
-   endif
-endif
 
 #lhapdf 5
 if (! $?LHAPATH) then
@@ -431,6 +418,15 @@ source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 if (-f  ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.csh) then
   source ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.csh
 endif
+
+# need set execute our Perl version
+set perlversion=`perl -e 'printf "%vd\n", $^V;'`
+if (! $?PERL5LIB) then
+   if (-d ${OPT_SPHENIX}/lib/site_perl/$perlversion) then
+     setenv PERL5LIB ${OPT_SPHENIX}/lib/site_perl/$perlversion
+   endif
+endif
+unset perlversion
 
 # we need to execute our python3 in our path to get the version
 #add our python packages and path to ROOT.py

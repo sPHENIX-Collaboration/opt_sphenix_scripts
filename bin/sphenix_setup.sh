@@ -502,21 +502,12 @@ then
 fi
 
 # Perl - we have our own version, so run this after our path is set up
-#set perlversion=`perl -e'print substr($^V, 1)'`
+set perlversion=`perl -e 'printf "%vd\n", $^V;'`
 if [ -z "$PERL5LIB" ]
 then
-   if [ -d ${OPT_SPHENIX}/share/perl5 ]
+   if [ -d ${OPT_SPHENIX}/lib/site_perl/$perlversion ]
    then
-     export PERL5LIB=${OPT_SPHENIX}/lib64/perl5:${OPT_SPHENIX}/share/perl5
-   fi
-   if [ -d ${OPT_UTILS}/share/perl5 ]
-   then
-     if [ -z "$PERL5LIB" ]
-     then
-       export PERL5LIB=${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     else
-       export PERL5LIB=${PERL5LIB}:${OPT_UTILS}/lib64/perl5:${OPT_UTILS}/share/perl5
-     fi
+     export PERL5LIB=${OPT_SPHENIX}/lib/site_perl/$perlversion
    fi
 fi
 # we need to execute our python3 in our path to get the version
