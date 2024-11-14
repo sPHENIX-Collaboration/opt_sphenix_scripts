@@ -160,12 +160,10 @@ fi
 
 # Absolute path of this script
 scriptpath=`dirname "$this_script"`
-# extract base path (everything before /opt/sphenix or /opt/fun4all)
+# extract base path (everything before /opt/sphenix
 if [[ $scriptpath == *"/opt/sphenix"* ]]
 then
   optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
-else
-  optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/fun4all")}'`
 fi
 
 optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
@@ -186,15 +184,6 @@ then
   then
     export OPT_SPHENIX=${optbasepath}/opt/sphenix/core
   fi
-  if [[ -d ${optbasepath}/opt/fun4all/core ]]
-  then
-    export OPT_SPHENIX=${optbasepath}/opt/fun4all/core
-  fi
-fi
-
-if [[ -z "$OPT_FUN4ALL" ]]
-then
-  export OPT_FUN4ALL=$OPT_SPHENIX
 fi
 
 if [[ -z "$OPT_UTILS" ]]
@@ -202,10 +191,6 @@ then
   if [[ -d ${optbasepath}/opt/sphenix/utils ]]
   then
     export OPT_UTILS=${optbasepath}/opt/sphenix/utils
-  fi
-  if [[ -d ${optbasepath}/opt/fun4all/utils ]]
-  then
-    export OPT_UTILS=${optbasepath}/opt/fun4all/utils
   fi
 fi
 
