@@ -137,28 +137,17 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/almalinux-9.2/gcc-14.2.0
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/alma9.2-gcc-14.2.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
     setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/sphenix/core
   endif
-  if (-d ${local_cvmfsvolume}/opt/fun4all/core) then
-    setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/fun4all/core
-  endif
-endif
-
-#for the eic - set OPT_FUN4ALL to OPT_SPHENIX
-if (! $?OPT_FUN4ALL) then
-  setenv OPT_FUN4ALL $OPT_SPHENIX
 endif
 
 if (! $?OPT_UTILS) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/utils) then
     setenv OPT_UTILS ${local_cvmfsvolume}/opt/sphenix/utils
-  endif
-  if (-d ${local_cvmfsvolume}/opt/fun4all/utils) then
-    setenv OPT_UTILS ${local_cvmfsvolume}/opt/fun4all/utils
   endif
 endif
 
