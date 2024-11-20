@@ -1,4 +1,4 @@
-# enable c++17 flag by default
+# enable c++20 flag by default
 CXXFLAGS="-g -std=c++20"
 # Allow LD_LIBRARY_PATH to override RPATH
 LDFLAGS='-Wl,--enable-new-dtags'
