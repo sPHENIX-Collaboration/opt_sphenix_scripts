@@ -481,9 +481,9 @@ export LD_LIBRARY_PATH
 export MANPATH
 source $OPT_SPHENIX/bin/setup_root6_include_path.sh $OFFLINE_MAIN
 
-if [[ -f ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-centos7/setup.sh ]]
+if [[ -f ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.sh ]]
 then
-  source ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-centos7/setup.sh
+  source ${OPT_SPHENIX}/gcc/14.2.0-2f0a0/x86_64-el9/setup.sh
 fi
 
 # Perl - we have our own version, so run this after our path is set up
