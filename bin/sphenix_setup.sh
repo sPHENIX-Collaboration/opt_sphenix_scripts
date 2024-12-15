@@ -487,7 +487,7 @@ then
 fi
 
 # Perl - we have our own version, so run this after our path is set up
-set perlversion=`perl -e 'printf "%vd\n", $^V;'`
+perlversion=`perl -e 'printf "%vd\n", $^V;'`
 if [ -z "$PERL5LIB" ]
 then
    if [ -d ${OPT_SPHENIX}/lib/site_perl/$perlversion ]
