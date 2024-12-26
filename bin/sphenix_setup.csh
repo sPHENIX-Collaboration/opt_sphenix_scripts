@@ -307,12 +307,12 @@ endif
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /afs/rhic.bnl.gov/app/insure-7.5.5
+  setenv PARASOFT /sdcc/common/software/insure/insure-2024.1.0
 endif
 
 # File catalog search path
 if (! $?GSEARCHPATH) then
-    setenv GSEARCHPATH .:PG:LUSTRE:XROOTD:MINIO
+    setenv GSEARCHPATH .:PG:LUSTRE
 endif
 
 # set initial paths, all following get prepended

@@ -365,13 +365,13 @@ fi
 # Set up Insure++, if we have it
 if [ -z  "$PARASOFT" ] 
 then
-  export PARASOFT=/afs/rhic.bnl.gov/app/insure-7.5.5
+  export PARASOFT=/sdcc/common/software/insure/insure-2024.1.0
 fi
 
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
-  export GSEARCHPATH=.:PG:LUSTRE:XROOTD:MINIO
+  export GSEARCHPATH=.:PG:LUSTRE
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
