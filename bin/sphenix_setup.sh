@@ -365,7 +365,8 @@ fi
 # Set up Insure++, if we have it
 if [ -z  "$PARASOFT" ] 
 then
-  export PARASOFT=/sdcc/common/software/insure/insure-2024.1.0
+#  export PARASOFT=/sdcc/common/software/insure/insure-2024.1.0
+  export PARASOFT=doesnotexist
 fi
 
 # File catalog search path
