@@ -307,7 +307,8 @@ endif
 
 # Set up Insure++, if we have it
 if (! $?PARASOFT) then
-  setenv PARASOFT /sdcc/common/software/insure/insure-2024.1.0
+#  setenv PARASOFT /sdcc/common/software/insure/insure-2024.1.0
+  setenv PARASOFT doesnotexist
 endif
 
 # File catalog search path
