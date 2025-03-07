@@ -137,7 +137,7 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/almalinux-9.2/gcc-13.1.0
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/gcc-12.1.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
