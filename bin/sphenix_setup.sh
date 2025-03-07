@@ -532,6 +532,14 @@ then
   then
     export PYTHONPATH=${OFFLINE_MAIN}/lib/python${pythonversion}/site-packages:${PYTHONPATH}
   fi
+  if [[ -d ${OPT_SPHENIX}/lib64/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OPT_SPHENIX}/lib64/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
+  if [[ -d ${OFFLINE_MAIN}/lib64/python${pythonversion}/site-packages ]]
+  then
+    export PYTHONPATH=${OFFLINE_MAIN}/lib64/python${pythonversion}/site-packages:${PYTHONPATH}
+  fi
 # last not least add ./ to run shrek which is installed in the local dir
   export PYTHONPATH=.:${PYTHONPATH}
 fi
