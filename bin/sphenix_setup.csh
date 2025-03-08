@@ -428,8 +428,8 @@ setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 #set ROOT_INCLUDE_PATH for root6
 source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $OFFLINE_MAIN
 
-if (-f  ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh) then
-  source ${OPT_SPHENIX}/gcc/13.1.0-b3d18/x86_64-el9/setup.csh
+if (-f  ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh) then
+  source ${OPT_SPHENIX}/gcc/12.1.0-57c96/x86_64-centos7/setup.csh
 endif
 
 # we need to execute our python3 in our path to get the version
