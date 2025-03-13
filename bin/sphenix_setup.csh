@@ -82,6 +82,7 @@ if ($opt_n) then
   unsetenv PERL5LIB
   unsetenv PGHOST
   unsetenv PG_PHENIX_DBNAME
+  unsetenv PGUSER
   unsetenv PYTHIA8
   unsetenv PYTHONPATH
   unsetenv ROOTSYS
@@ -92,6 +93,14 @@ if ($opt_n) then
   unsetenv XPLOAD_CONFIG
   unsetenv XPLOAD_CONFIG_DIR
   unsetenv XPLOAD_DIR
+endif
+
+# set our postgres defaults
+if (! $?PGHOST) then
+  setenv PGHOST sphnxdbmaster.sdcc.bnl.gov
+endif
+if (! $?PGUSER) then
+  setenv PGUSER phnxrc
 endif
 
 # turn off gtk warning about accessibility bus
@@ -111,11 +120,17 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/online/Debian
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/online/alma9.2
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}) then
-    setenv OPT_SPHENIX ${local_cvmfsvolume}
+    setenv OPT_SPHENIX ${local_cvmfsvolume}/opt/sphenix/core
+  endif
+endif
+
+if (! $?OPT_UTILS) then
+  if (-d ${local_cvmfsvolume}/opt/sphenix/utils) then
+    setenv OPT_UTILS ${local_cvmfsvolume}/opt/sphenix/utils
   endif
 endif
 
@@ -183,11 +198,12 @@ set path = (/usr/local/bin /usr/bin /usr/local/sbin /usr/sbin)
 set manpath = `/usr/bin/man --path`
 
 set ldpath = /usr/local/lib64:/usr/lib64
-
 # loop over all bin dirs and prepend to path
 foreach bindir (${ONLINE_MAIN}/bin \
                 ${OPT_SPHENIX}/bin \
-                ${ROOTSYS}/bin)
+                ${OPT_UTILS}/bin \
+                ${ROOTSYS}/bin \
+                ${OFFLINE_MAIN}/bin )
   if (-d $bindir) then
     set path = ($bindir $path)
   endif
@@ -196,8 +212,12 @@ end
 #loop over all libdirs and prepend to ldpath
 foreach libdir (${ONLINE_MAIN}/lib \
                 ${ONLINE_MAIN}/lib64 \
+                ${OFFLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib64 \
                 ${OPT_SPHENIX}/lib \
                 ${OPT_SPHENIX}/lib64 \
+                ${OPT_UTILS}/lib \
+                ${OPT_UTILS}/lib64 \
                 ${rootlibdir} )
   if (-d $libdir) then
     set ldpath = ${libdir}:${ldpath}
@@ -205,8 +225,11 @@ foreach libdir (${ONLINE_MAIN}/lib \
 end
 # loop over all man dirs and prepend to manpath
 foreach mandir (${ONLINE_MAIN}/share/man \
+                ${OFFLINE_MAIN}/share/man \
                 ${OPT_SPHENIX}/man \
                 ${OPT_SPHENIX}/share/man \
+                ${OPT_UTILS}/man \
+                ${OPT_UTILS}/share/man \
                 ${ROOTSYS}/man )
   if (-d $mandir) then
     set manpath = ${mandir}:${manpath}
@@ -215,7 +238,7 @@ end
 
 # finally prepend . and the gcc8.3 utils bin for valgrind to path/ldpath
 
-set path = (. /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils/bin $path)
+#set path = (. $path)
 set ldpath=.:${ldpath}
 
 # Set some actual environment vars
@@ -246,10 +269,8 @@ setenv LD_LIBRARY_PATH `echo -n $LD_LIBRARY_PATH | sed 's/.$//'`
 setenv MANPATH `echo -n $MANPATH | sed 's/.$//'`
 
 #set ROOT_INCLUDE_PATH for root6
-#source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $ONLINE_MAIN
-
-if (-f  ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh) then
-  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.csh
+if (-f ${OPT_SPHENIX}/bin/setup_root6_include_path.csh) then
+  source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $ONLINE_MAIN
 endif
 
 #unset local variables
