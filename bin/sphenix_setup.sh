@@ -159,7 +159,7 @@ if [[ -z "$force_base" && -d $force_base ]]
 then
   optbasepath=$force_base
 fi
-echo optbasepath ${optbasepath}
+
 if [[ -z "$OPT_SPHENIX" ]]
 then
   if [[ -d ${optbasepath}/opt/sphenix/core ]]
@@ -192,7 +192,7 @@ fi
 
 if [ -z "$ONLINE_MAIN" ]
 then
-  export ONLINE_MAIN=$$OPT_SPHENIX/current
+  export ONLINE_MAIN=$OPT_SPHENIX/current
 fi
 if [ -z "$OFFLINE_MAIN" ]
 then
