@@ -351,3 +351,12 @@ if [ -f $OPT_SPHENIX/bin/setup_root6_include_path.sh ]
 then
   source $OPT_SPHENIX/bin/setup_root6_include_path.sh $ONLINE_MAIN
 fi
+
+perlversion=`perl -e 'printf "%vd\n", $^V;' | awk -F. '{print $1"."$2}'`
+if [ -z "$PERL5LIB" ]
+then
+   if [ -d ${OPT_SPHENIX}/share/perl5/$perlversion ]
+   then
+     export PERL5LIB=${OPT_SPHENIX}/share/perl5/$perlversion
+   fi
+fi

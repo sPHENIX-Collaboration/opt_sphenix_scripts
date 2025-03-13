@@ -33,8 +33,6 @@ if ($local_offline_main_done == 0) then
     endif
   end
 endif
-# add G4 include path
-setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$G4_MAIN/include
 # add ROOT Macros
 if (-d $OFFLINE_MAIN/rootmacros) then
   setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/rootmacros
