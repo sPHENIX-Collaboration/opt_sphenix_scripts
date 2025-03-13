@@ -43,11 +43,11 @@ for arg in "$@"
 do
     case "$arg" in
     -a)
-	opt_a=1
-	;;
+        opt_a=1
+        ;;
     -n)
         opt_n=1
-	;;
+        ;;
     -b*)
         opt_b=$arg
         # strip the -b from the base installation area
@@ -60,10 +60,10 @@ do
         echo "-n: overwrite all environment variables, needed for switching builds"
         echo "version: build version (new, ana, pro, play,... - also with version number e.g. ana.407)"
         exit 0
-	;;
+        ;;
     *)
         opt_v=$arg
-	;;
+        ;;
     esac
 done
 
@@ -96,6 +96,7 @@ if [ $opt_n != 0 ]
   unset PERL5LIB
   unset PGHOST
   unset PG_PHENIX_DBNAME
+  unset PGUSER
   unset PYTHIA8
   unset PYTHONPATH
   unset ROOTSYS
@@ -108,6 +109,17 @@ if [ $opt_n != 0 ]
   unset XPLOAD_DIR
 fi
 
+
+# set our postgres defaults
+if [ -z "$PGHOST" ]
+then
+  export PGHOST=sphnxdbmaster.sdcc.bnl.gov
+fi
+
+if [ -z "$PGUSER" ]
+then
+  export PGUSER=phnxrc
+fi
 
 # store previous paths in case we want to prepend them (with -a)
 export ORIG_PATH=$PATH
@@ -130,27 +142,37 @@ fi
 # Absolute path of this script
 scriptpath=`dirname "$this_script"`
 # extract base path (everything before /opt/sphenix or /opt/fun4all)
-if [[ $scriptpath == *"/online/Debian"* ]]
+# extract base path (everything before /opt/sphenix
+if [[ $scriptpath == *"/opt/sphenix"* ]]
 then
-  optsphenixindex=`echo $scriptpath | awk '{print index($0,"/online/Debian")}'`
-  optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
+  optsphenixindex=`echo $scriptpath | awk '{print index($0,"/opt/sphenix")}'`
 fi
+
+optbasepath=`echo $scriptpath | awk '{print substr($0,0,'$optsphenixindex'-1)}'`
 
 # just in case the above screws up, give it the default in rcf
 if [[ -z "$optbasepath" || ! -d $optbasepath ]]
 then
-  optbasepath="/cvmfs/sphenix.sdcc.bnl.gov"
+  optbasepath="/cvmfs/sphenix.sdcc.bnl.gov/online/alma9.2"
 fi
 if [[ -z "$force_base" && -d $force_base ]]
 then
   optbasepath=$force_base
 fi
-
+echo optbasepath ${optbasepath}
 if [[ -z "$OPT_SPHENIX" ]]
 then
-  if [[ -d ${optbasepath}/online/Debian ]]
+  if [[ -d ${optbasepath}/opt/sphenix/core ]]
   then
-    export OPT_SPHENIX=${optbasepath}/online/Debian
+    export OPT_SPHENIX=${optbasepath}/opt/sphenix/core
+  fi
+fi
+
+if [[ -z "$OPT_UTILS" ]]
+then
+  if [[ -d ${optbasepath}/opt/sphenix/utils ]]
+  then
+    export OPT_UTILS=${optbasepath}/opt/sphenix/utils
   fi
 fi
 
@@ -170,11 +192,11 @@ fi
 
 if [ -z "$ONLINE_MAIN" ]
 then
-  export ONLINE_MAIN=${optbasepath}/online/Debian/current
+  export ONLINE_MAIN=$$OPT_SPHENIX/current
 fi
 if [ -z "$OFFLINE_MAIN" ]
 then
-  export OFFLINE_MAIN=${optbasepath}/online/Debian/current
+  export OFFLINE_MAIN=$OPT_SPHENIX/current
 fi
 
 
@@ -239,7 +261,9 @@ ldpath=/usr/local/lib64:/usr/lib64
 
 #loop over all bin dirs and prepend to path
 for bindir in ${ONLINE_MAIN}/bin \
+              ${OFFLINE_MAIN}/bin \
               ${OPT_SPHENIX}/bin \
+              ${OPT_UTILS}/bin \
               ${rootbindir}
 do
   if [ -d $bindir ]
@@ -251,8 +275,12 @@ done
 #loop over all lib dirs and prepend to ldpath
 for libdir in   ${ONLINE_MAIN}/lib \
                 ${ONLINE_MAIN}/lib64 \
+                ${OFFLINE_MAIN}/lib \
+                ${OFFLINE_MAIN}/lib64 \
                 ${OPT_SPHENIX}/lib \
                 ${OPT_SPHENIX}/lib64 \
+                ${OPT_UTILS}/lib \
+                ${OPT_UTILS}/lib64 \
                 ${rootlibdir}
 do
   if [ -d $libdir ]
@@ -262,8 +290,11 @@ do
 done
 # loop over all man dirs and prepend to manpath
 for mandir in ${ONLINE_MAIN}/share/man \
+              ${OFFLINE_MAIN}/share/man \
               ${OPT_SPHENIX}/man \
               ${OPT_SPHENIX}/share/man \
+              ${OPT_UTILS}/man \
+              ${OPT_UTILS}/share/man \
               ${ROOTSYS}/man
 do
   if [ -d $mandir ]
@@ -278,7 +309,7 @@ done
 
 # finally prepend . to path/ldpath
 
-path=.:/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/utils/bin:$path
+path=.:$path
 ldpath=.:$ldpath
 
 #set paths
@@ -292,11 +323,11 @@ then
     export PATH=${ORIG_PATH}:${PATH}
     if [ ! -z "$ORIG_LD_LIBRARY_PATH" ]
     then
-	export LD_LIBRARY_PATH=$ORIG_LD_LIBRARY_PATH:${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=$ORIG_LD_LIBRARY_PATH:${LD_LIBRARY_PATH}
     fi
     if [ ! -z "$MANPATH" ]
     then
-	export MANPATH=${ORIG_MANPATH}:${MANPATH}
+        export MANPATH=${ORIG_MANPATH}:${MANPATH}
     fi
 fi
 
@@ -316,9 +347,7 @@ unset manpath
 export PATH
 export LD_LIBRARY_PATH
 export MANPATH
-#source $OPT_SPHENIX/bin/setup_root6_include_path.sh $ONLINE_MAIN
-
-if [[ -f ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh ]]
+if [ -f $OPT_SPHENIX/bin/setup_root6_include_path.sh ]
 then
-  source ${OPT_SPHENIX}/gcc/8.3.0.1-0a5ad/x86_64-centos7/setup.sh
+  source $OPT_SPHENIX/bin/setup_root6_include_path.sh $ONLINE_MAIN
 fi
