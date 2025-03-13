@@ -44,8 +44,6 @@ then
     fi
   done
 fi
-# add G4 include path
-ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
 # add ROOT Macros
 if [ -d $OFFLINE_MAIN/rootmacros ]
 then

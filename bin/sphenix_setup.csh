@@ -273,5 +273,15 @@ if (-f ${OPT_SPHENIX}/bin/setup_root6_include_path.csh) then
   source ${OPT_SPHENIX}/bin/setup_root6_include_path.csh $ONLINE_MAIN
 endif
 
+# need set execute our Perl version
+set perlversion=`perl -e 'printf "%vd\n", $^V;' | awk -F. '{print $1"."$2}'`
+if (! $?PERL5LIB) then
+   if (-d ${OPT_SPHENIX}/share/perl5/$perlversion) then
+     setenv PERL5LIB ${OPT_SPHENIX}/share/perl5/$perlversion
+   endif
+endif
+unset perlversion
+
+
 #unset local variables
 unset local_cvmfsvolume
