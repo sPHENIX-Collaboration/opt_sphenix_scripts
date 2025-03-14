@@ -232,24 +232,8 @@ fi
 
 if [ -f $ROOTSYS/bin/root-config ]
 then
-  rootlibdir_tmp=`$ROOTSYS/bin/root-config --libdir`
-  if [ -d $rootlibdir_tmp ]
-  then
-    here=`pwd`
-    cd $rootlibdir_tmp
-    there=`pwd -P`
-    rootlibdir=`echo $there | sed "s/@sys/$sysname/g"`
-    cd $here
-  fi
-  rootbindir_tmp=`$ROOTSYS/bin/root-config --bindir`
-  if [ -d $rootbindir_tmp ]
-  then
-    here=`pwd`
-    cd $rootbindir_tmp
-    there=`pwd -P`
-    rootbindir=`echo $there | sed "s/@sys/$sysname/g"`
-    cd $here
-  fi
+  rootlibdir=`$ROOTSYS/bin/root-config --libdir`
+  rootbindir=`$ROOTSYS/bin/root-config --bindir`
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
