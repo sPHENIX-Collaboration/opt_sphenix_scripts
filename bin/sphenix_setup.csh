@@ -175,22 +175,9 @@ endif
 
 #find root lib and bin dir
 if (-f $ROOTSYS/bin/root-config) then
-  set rootlibdir_tmp = `$ROOTSYS/bin/root-config --libdir`
-  if (-d $rootlibdir_tmp) then
-    set here=`pwd`
-    cd $rootlibdir_tmp
-    set there=`pwd -P`
-    set rootlibdir = `echo $there | sed "s/@sys/$sysname/g"`
-    cd $here
+  set rootlibdir = `$ROOTSYS/bin/root-config --libdir`
   endif
-  set rootbindir_tmp = `$ROOTSYS/bin/root-config --bindir`
-  if (-d $rootbindir_tmp) then
-    set here=`pwd`
-    cd $rootbindir_tmp
-    set there=`pwd -P`
-    set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
-    cd $here
-  endif
+  set rootbindir = `$ROOTSYS/bin/root-config --bindir`
 endif
 
 # set initial paths, all following get prepended
