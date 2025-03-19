@@ -372,7 +372,7 @@ fi
 # File catalog search path
 if [ -z "$GSEARCHPATH" ]
 then
-  export GSEARCHPATH=.:PG:LUSTRE
+  export GSEARCHPATH=.:PG:LUSTRE:RAWDATA
 fi
 
 path=(/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
