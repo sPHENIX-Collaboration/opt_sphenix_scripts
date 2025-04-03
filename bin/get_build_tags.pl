@@ -5,19 +5,16 @@ use warnings;
 use DBI;
 use Getopt::Long;
 
+sub printhelp;
+
 my $opt_help = 0;
+my $timestamp;
 
-GetOptions('help' => \$opt_help);
-
+GetOptions('help' => \$opt_help,'timestamp' => \$timestamp);
 if ($opt_help)
 {
-    print "usage: get_build_tags.pl <build>\n";
-    print "no <build>: print list of builds in DB\n";
-    print "parameters:\n";
-    print "--help: this text\n";
-    exit(0);
+    &printhelp;
 }
-
 my $dbh = DBI->connect("dbi:ODBC:phnxbld") || die $DBI::error;
 if ($#ARGV < 0)
 {
@@ -28,10 +25,13 @@ if ($#ARGV < 0)
 	print "$bld[0]\n";
     }
     $getbuilds->finish();
+    print "\n";
+    $opt_help = 1;
+    &printhelp;
 }
 else
 {
-    my $gettags = $dbh->prepare("select  reponame,tag  from buildtags where build = ? order by reponame");
+    my $gettags = $dbh->prepare("select  reponame,tag,date  from buildtags where build = ? order by reponame");
     while ($#ARGV >= 0)
     {
 	my $build = $ARGV[0];
@@ -41,7 +41,12 @@ else
 	    print "\nBuild: $build\n";
 	    while (my @repotags = $gettags->fetchrow_array())
 	    {
-		print "repository: $repotags[0]  tag: $repotags[1]\n";
+		print "repository: ", pack('A45', $repotags[0]),"  tag: $repotags[1]";
+		if (defined $timestamp)
+		{
+		    print "  timestamp: $repotags[2]";
+		}
+		print "\n";
 	    }
 	}
 	shift(@ARGV);
@@ -50,3 +55,16 @@ else
 }
 
 $dbh->disconnect;
+
+sub printhelp
+{
+    if ($opt_help)
+    {
+	print "usage: get_build_tags.pl <build>\n";
+	print "no <build>: print list of builds in DB\n";
+	print "parameters:\n";
+	print "--help: this text\n";
+	print "--timestamp: print timestamp of tag\n";
+	exit(0);
+    }
+}
