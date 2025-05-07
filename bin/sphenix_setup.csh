@@ -103,13 +103,6 @@ if (! $?PGUSER) then
   setenv PGUSER phnxrc
 endif
 
-# set afs sysname to replace @sys so links stay functional even if
-# the afs sysname changes in the future
-if (-f /usr/bin/fs) then
-  set sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
-else
-  set sysname=x8664_sl7
-endif
 # turn off opengl direct rendering bc problems for nx
 # that problem seems to have been fixed, leave this in here since it
 # took a long time to figure this one out
@@ -117,11 +110,6 @@ endif
 
 # turn off gtk warning about accessibility bus
 setenv NO_AT_BRIDGE 1
-
-# speed up DCache
-setenv DCACHE_RAHEAD
-setenv DCACHE_RA_BUFFER 2097152
-
 
 # Make copies of PATH and LD_LIBRARY_PATH as they were
 setenv ORIG_PATH ${PATH}
@@ -190,7 +178,7 @@ if (-d $OFFLINE_MAIN) then
   set here=`pwd`
   cd $OFFLINE_MAIN
   set there=`pwd -P`
-  setenv OFFLINE_MAIN `echo $there | sed "s/@sys/$sysname/g"`
+  setenv OFFLINE_MAIN `echo $there`
   cd $here
 endif
 
@@ -213,7 +201,7 @@ if (! $?ROOTSYS) then
     set here=`pwd`
     cd $ROOTSYS
     set there=`pwd -P`
-    setenv ROOTSYS `echo $there | sed "s/@sys/$sysname/g"`
+    setenv ROOTSYS `echo $there`
     cd $here
 endif
 
@@ -224,7 +212,7 @@ if (-f $ROOTSYS/bin/root-config) then
     set here=`pwd`
     cd $rootlibdir_tmp
     set there=`pwd -P`
-    set rootlibdir = `echo $there | sed "s/@sys/$sysname/g"`
+    set rootlibdir = `echo $there`
     cd $here
   endif
   set rootbindir_tmp = `$ROOTSYS/bin/root-config --bindir`
@@ -232,7 +220,7 @@ if (-f $ROOTSYS/bin/root-config) then
     set here=`pwd`
     cd $rootbindir_tmp
     set there=`pwd -P`
-    set rootbindir = `echo $there | sed "s/@sys/$sysname/g"`
+    set rootbindir = `echo $there`
     cd $here
   endif
 endif
@@ -262,7 +250,7 @@ if (-d $G4_MAIN) then
     set here=`pwd`
     cd $G4_MAIN
     set there=`pwd -P`
-    setenv G4_MAIN `echo $there | sed "s/@sys/$sysname/g"`
+    setenv G4_MAIN `echo $there`
     cd $here
 # this is for later possible use, extract the main version number
     set g4basedir = `basename $G4_MAIN`
@@ -386,12 +374,6 @@ else
     setenv LD_LIBRARY_PATH ${ldpath}
     setenv MANPATH ${manpath}
 endif
-
-#replace @sys by afs sysname (to strip duplicate entries with /@sys/ and /x86_64_sl7/)
-# this does not change anything in cvmfs, just in case we need to go to afs
-setenv PATH  `echo $PATH | sed "s/@sys/$sysname/g"`
-setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | sed "s/@sys/$sysname/g"`
-setenv MANPATH  `echo $MANPATH | sed "s/@sys/$sysname/g"`
 
 # strip duplicates in paths
 setenv PATH `echo -n $PATH | awk -v RS=: -v ORS=: '! arr[$0]++'` 
