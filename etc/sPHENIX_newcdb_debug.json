@@ -1,5 +1,5 @@
 {
-  "base_url": "sphenix-cdb.apps.sdcc.bnl.gov",
+  "base_url": "nopayloaddb.apps.rcf.bnl.gov",
   "api_res":  "/api/cdb_rest/",
   "write_dir": "/sphenix/cvmfscalib/sphnxpro/cdb/",
   "read_dir_list": ["/cvmfs/sphenix.sdcc.bnl.gov/calibrations/sphnxpro/cdb/", "/sphenix/cvmfscalib/sphnxpro/cdb/"],
