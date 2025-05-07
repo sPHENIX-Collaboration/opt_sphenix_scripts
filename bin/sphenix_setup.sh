@@ -120,14 +120,6 @@ then
   export PGUSER=phnxrc
 fi
 
-# set afs sysname to replace @sys so links stay functional even if
-# the afs sysname changes in the future
-if [[ -f /usr/bin/fs ]]
-then
-  sysname=`/usr/bin/fs sysname | sed "s/^.*'\(.*\)'.*/\1/"`
-else
-  sysname=x8664_sl7
-fi
 # turn off opengl direct rendering bc problems for nx
 # that problem seems to have been fixed, leave this in here since it
 # took a long time to figure this one out
@@ -135,10 +127,6 @@ fi
 
 # turn off gtk warning about accessibility bus
 export NO_AT_BRIDGE=1
-
-# speed up DCache
-export DCACHE_RAHEAD
-export DCACHE_RA_BUFFER=2097152
 
 # store previous paths in case we want to prepend them (with -a)
 export ORIG_PATH=$PATH
@@ -279,7 +267,7 @@ then
     here=`pwd`
     cd $rootlibdir_tmp
     there=`pwd -P`
-    rootlibdir=`echo $there | sed "s/@sys/$sysname/g"`
+    rootlibdir=`echo $there`
     cd $here
   fi
   rootbindir_tmp=`$ROOTSYS/bin/root-config --bindir`
@@ -288,7 +276,7 @@ then
     here=`pwd`
     cd $rootbindir_tmp
     there=`pwd -P`
-    rootbindir=`echo $there | sed "s/@sys/$sysname/g"`
+    rootbindir=`echo $there`
     cd $here
   fi
 fi
@@ -458,11 +446,6 @@ then
 	export MANPATH=${ORIG_MANPATH}:${MANPATH}
     fi
 fi
-
-#replace @sys by afs sysname (to strip duplicate entries with /@sys/ and /x86_64_sl7/)
-PATH=`echo $PATH | sed "s/@sys/$sysname/g"`
-LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | sed "s/@sys/$sysname/g"`
-MANPATH=`echo $MANPATH | sed "s/@sys/$sysname/g"`
 
 # strip duplicates in paths
 PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '!arr[$0]++'` 
