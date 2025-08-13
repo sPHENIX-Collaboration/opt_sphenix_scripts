@@ -45,12 +45,21 @@ then
   done
 fi
 # add G4 include path
-ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
+if [ -d $G4_MAIN/include ]
+then
+    ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$G4_MAIN/include
+fi
 # add ROOT Macros
 if [ -d $OFFLINE_MAIN/rootmacros ]
 then
   ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$OFFLINE_MAIN/rootmacros
 fi
+
+if [ -d $OPT_SPHENIX/include ]
+then
+    ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$OPT_SPHENIX/include
+fi
+
 export ROOT_INCLUDE_PATH
 #unset locally used variables
 unset local_incdir
