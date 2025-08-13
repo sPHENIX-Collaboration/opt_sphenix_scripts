@@ -34,10 +34,16 @@ if ($local_offline_main_done == 0) then
   end
 endif
 # add G4 include path
-setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$G4_MAIN/include
+if (-d $G4_MAIN/include) then
+  setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$G4_MAIN/include
+endif
 # add ROOT Macros
 if (-d $OFFLINE_MAIN/rootmacros) then
   setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OFFLINE_MAIN/rootmacros
+endif
+# add $OPT_SPHENIX includes
+if (-d $OPT_SPHENIX/include) then
+  setenv ROOT_INCLUDE_PATH ${ROOT_INCLUDE_PATH}:$OPT_SPHENIX/include
 endif
 #echo $ROOT_INCLUDE_PATH
 unset local_incdir
