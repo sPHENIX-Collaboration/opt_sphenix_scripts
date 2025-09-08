@@ -19,21 +19,23 @@ my $filelist;
 my $use_dcache;
 my $use_xrdcp;
 my $use_mcs3;
-my $use_dd;
+my $use_dd = 1;
+my $use_cp;
 my $verbose;
 
-GetOptions("dcache" => \$use_dcache, "dd" => \$use_dd, "filelist" => \$filelist, "mcs3" => \$use_mcs3, "test"=>\$test, "verbose" => \$verbose, "xrdcp"=>\$use_xrdcp);
+GetOptions("dcache" => \$use_dcache, "cp" => \$use_cp, "dd" => \$use_dd, "filelist" => \$filelist, "mcs3" => \$use_mcs3, "test"=>\$test, "verbose" => \$verbose, "xrdcp"=>\$use_xrdcp);
 
 if ($#ARGV < 0)
 {
     print "usage: getinputfiles.pl <file>\n";
     print "parameters:\n";
     print "--dcache: use dccp\n";
-    print "--dd: use dd instead of cp for lustre\n";
+    print "--cp: use cp instead of dd for lustre\n";
     print "--filelist: argument is an ascii file with a list\n";
     print "--mcs3: use mcs3 for lustre\n";
     print "--test: do nothing, just test what we would do\n";
     print "--xrdcp: (with --dcache) use xrdcp\n";
+    print "--verbose: turn on diagnosis printouts\n";
     exit(1);
 }
 
@@ -126,7 +128,7 @@ foreach my $file (keys %filemd5)
 #    print "size: $res[2]\n";
 
 #    my $copycmd = sprintf("rsync -av %s .",$file);
-    my $copycmd = sprintf("cp %s .",$file);
+    my $copycmd =  sprintf("dd if=%s of=%s bs=12M",$file,basename($file));
     if ($file =~ /lustre/)
     {
 	if ($lustremount)
@@ -135,13 +137,13 @@ foreach my $file (keys %filemd5)
 	}
 	else
 	{
-	    if (defined $use_dd)
+	    if (defined $use_cp)
 	    {
-		$copycmd = sprintf("dd if=%s of=%s bs=4M iflag=direct",$file,basename($file));
+		$copycmd = sprintf("cp %s .",$file);
 	    }
 	    else
 	    {
-		$copycmd = sprintf("cp %s .",$file);
+		$copycmd = sprintf("dd if=%s of=%s bs=12M",$file,basename($file));
 	    }
 	}
     }
