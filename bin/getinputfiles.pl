@@ -30,7 +30,7 @@ if ($#ARGV < 0)
     print "usage: getinputfiles.pl <file>\n";
     print "parameters:\n";
     print "--dcache: use dccp\n";
-    print "--dd: use dd instead of cp for lustre\n";
+    print "--cp: use cp instead of dd for lustre\n";
     print "--filelist: argument is an ascii file with a list\n";
     print "--mcs3: use mcs3 for lustre\n";
     print "--test: do nothing, just test what we would do\n";
