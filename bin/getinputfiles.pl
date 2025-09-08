@@ -35,6 +35,7 @@ if ($#ARGV < 0)
     print "--mcs3: use mcs3 for lustre\n";
     print "--test: do nothing, just test what we would do\n";
     print "--xrdcp: (with --dcache) use xrdcp\n";
+    print "--verbose: turn on diagnosis printouts\n";
     exit(1);
 }
 
