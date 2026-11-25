@@ -93,6 +93,17 @@ if ($opt_n) then
   unsetenv XERCESCROOT
 endif
 
+set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/alma9.2-gcc-14.2.0
+
+# OFFLINE
+if (! $?OFFLINE_MAIN) then
+  if (! -d ${local_cvmfsvolume}/release/$opt_v) then
+    exit 1
+    set opt_v = "new"
+  endif
+  setenv OFFLINE_MAIN ${local_cvmfsvolume}/release/$opt_v
+endif
+
 # set our postgres defaults
 if (! $?PGHOST) then
   setenv PGHOST sphnxdbmaster.sdcc.bnl.gov
@@ -126,7 +137,6 @@ else
     unsetenv ORIG_MANPATH
 endif
 
-set local_cvmfsvolume=/cvmfs/sphenix.sdcc.bnl.gov/alma9.2-gcc-14.2.0
 
 if (! $?OPT_SPHENIX) then
   if (-d ${local_cvmfsvolume}/opt/sphenix/core) then
@@ -158,13 +168,6 @@ if (! $?LHAPATH) then
   setenv LHAPATH ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
 endif
 
-# OFFLINE
-if (! $?OFFLINE_MAIN) then
-  if (! -d ${local_cvmfsvolume}/release/$opt_v) then
-    set opt_v = "new"
-  endif
-  setenv OFFLINE_MAIN ${local_cvmfsvolume}/release/$opt_v
-endif
 
 if ($OFFLINE_MAIN =~ *"insure"* ) then
   setenv G_SLICE always-malloc

@@ -170,6 +170,15 @@ then
   optbasepath=$force_base
 fi
 
+if [ -z "$OFFLINE_MAIN" ]
+then
+  if [ ! -d ${optbasepath}/release/$opt_v ]
+  then
+    return 1
+  fi
+  export OFFLINE_MAIN=${optbasepath}/release/$opt_v
+fi
+
 if [[ -z "$OPT_SPHENIX" ]]
 then
   if [[ -d ${optbasepath}/opt/sphenix/core ]]
@@ -202,15 +211,6 @@ fi
 if [[ -z "$LHAPATH" && -d ${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets ]] 
 then
   export LHAPATH=${OPT_SPHENIX}/lhapdf-5.9.1/share/lhapdf/PDFsets
-fi
-
-if [ -z "$OFFLINE_MAIN" ]
-then
-  if [ ! -d ${optbasepath}/release/$opt_v ]
-  then
-    opt_v="new"
-  fi
-  export OFFLINE_MAIN=${optbasepath}/release/$opt_v
 fi
 
 if [[ $OFFLINE_MAIN = *insure* ]]
